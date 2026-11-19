@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>JOY VAI — HGNICE 3D Live Water Panel</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0f172a;
+    }
+
+    /* Fullscreen Login/Site Frame Layer */
+    .site-layer {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: #f8fafc;
+    }
+
+    .site-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Fallback if target site blocks embedding in iframe */
+    .embed-fallback {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(160deg, #fff1f2 0%, #ffe4e6 45%, #f8fafc 100%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .embed-fallback.show {
+      display: flex;
+    }
+
+    .fallback-card {
+      width: 100%;
+      max-width: 380px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 22px 18px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      border: 1px solid #fecdd3;
+    }
+
+    .fallback-badge {
+      display: inline-block;
+      background: #fee2e2;
+      color: #dc2626;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .fallback-card h2 {
+      font-size: 20px;
+      font-weight: 900;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+
+    .fallback-card p {
+      font-size: 12px;
+      color: #4b5563;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .direct-login-btn {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #ef4444, #f97316);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .mini-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .ghost-btn {
+      flex: 1;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #1e293b;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* Bottom Floating Quick Chips */
+    .floating-chips {
+      position: fixed;
+      bottom: 16px;
+      left: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 45;
+    }
+
+    .chip-btn {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .chip-btn.primary-chip {
+      color: #0369a1;
+    }
+
+    /* 3D Perspective Stage for Floating Water Panel */
+    .water-stage {
+      position: fixed;
+      top: 76px;
+      right: 12px;
+      width: 264px;
+      perspective: 920px;
+      z-index: 50;
+      user-select: none;
+    }
+
+    .water-panel {
+      width: 100%;
+      border-radius: 22px;
+      padding: 12px;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.24) 0px,
+          rgba(255, 255, 255, 0.24) 6px,
+          rgba(125, 211, 252, 0.18) 6px,
+          rgba(125, 211, 252, 0.18) 12px
+        ),
+        linear-gradient(160deg, #dff9ff 0%, #aeeeff 48%, #67e8f9 100%);
+      backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255, 255, 255, 0.92);
+      box-shadow:
+        0 24px 48px rgba(2, 132, 199, 0.3),
+        inset 0 1px 2px rgba(255, 255, 255, 0.95);
+      transition: transform 0.12s ease-out;
+    }
+
+    .water-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at var(--sheen-x, 50%) var(--sheen-y, 20%),
+        rgba(255, 255, 255, 0.65) 0%,
+        rgba(255, 255, 255, 0.12) 38%,
+        transparent 70%
+      );
+      z-index: 2;
+    }
+
+    .water-panel > * {
+      position: relative;
+      z-index: 3;
+    }
+
+    .water-panel.minimized .panel-body {
+      display: none;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: grab;
+      padding-bottom: 8px;
+      transform: translateZ(16px);
+    }
+
+    .panel-header:active { cursor: grabbing; }
+
+    .panel-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .drop-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #22d3ee, #0284c7);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35);
+    }
+
+    .panel-title-group { line-height: 1.1; }
+    .panel-title-group .name { font-size: 12px; font-weight: 900; color: #0f172a; }
+    .panel-title-group .sub { font-size: 9px; font-weight: 800; color: #0369a1; letter-spacing: 0.4px; }
+
+    .panel-controls { display: flex; align-items: center; gap: 6px; }
+
+    .icon-circle-btn {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      color: #0f172a;
+      font-weight: 900;
+      font-size: 12px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Lock View */
+    .lock-card {
+      background: rgba(255, 255, 255, 0.82);
+      border-radius: 16px;
+      padding: 16px 12px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      transform: translateZ(10px);
+    }
+
+    .lock-card.hidden { display: none; }
+
+    .lock-icon-ring {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      background: linear-gradient(145deg, #7dd3fc, #0284c7);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      box-shadow: 0 6px 14px rgba(2, 132, 199, 0.28);
+    }
+
+    .lock-title { font-size: 13px; font-weight: 900; color: #0f172a; letter-spacing: 0.4px; }
+    .lock-sub { font-size: 10px; color: #475569; margin-top: 2px; margin-bottom: 12px; }
+
+    .pass-input-wrap { position: relative; margin-bottom: 10px; }
+
+    .pass-input {
+      width: 100%;
+      padding: 9px 32px 9px 11px;
+      border-radius: 10px;
+      border: 1.5px solid #67e8f9;
+      background: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .pass-input:focus { border-color: #0284c7; }
+
+    .eye-toggle {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .unlock-btn {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(90deg, #06b6d4, #0d9488);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(13, 148, 136, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .error-msg {
+      color: #dc2626;
+      font-size: 10px;
+      font-weight: 700;
+      margin-top: 7px;
+      min-height: 14px;
+    }
+
+    /* Unlocked View */
+    .unlocked-view {
+      display: none;
+      transform: translateZ(12px);
+    }
+
+    .unlocked-view.active { display: block; }
+
+    .meta-strip {
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .period-box .lbl { font-size: 8px; font-weight: 800; color: #64748b; }
+    .period-box .val { font-size: 11px; font-weight: 900; color: #0f172a; }
+
+    .timer-pill {
+      background: linear-gradient(90deg, #fb7185, #ef4444);
+      color: #ffffff;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .api-tag {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 9px;
+      font-weight: 900;
+      padding: 4px 6px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .signal-box {
+      background: linear-gradient(135deg, #2dd4bf, #0284c7);
+      border-radius: 14px;
+      padding: 11px;
+      color: #ffffff;
+      margin-bottom: 8px;
+      box-shadow: 0 6px 14px rgba(2, 132, 199, 0.25);
+    }
+
+    .signal-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .signal-main {
+      font-size: 22px;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: 1px;
+      margin: 5px 0;
+    }
+
+    .prob-bar-wrap {
+      background: rgba(255, 255, 255, 0.3);
+      height: 6px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .prob-bar-fill {
+      height: 100%;
+      background: #ffffff;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .prob-pct {
+      text-align: right;
+      font-size: 9px;
+      font-weight: 900;
+      margin-top: 3px;
+    }
+
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 14px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .num-head {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      font-weight: 900;
+      color: #0369a1;
+      margin-bottom: 2px;
+    }
+
+    .wave-num-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wave-svg {
+      width: 64px;
+      height: 64px;
+      filter: drop-shadow(0 5px 10px rgba(2, 132, 199, 0.28));
+    }
+
+    .sub-lbl {
+      font-size: 8px;
+      font-weight: 900;
+      color: #0369a1;
+      margin-top: -2px;
+    }
+
+    .sync-row {
+      margin-top: 8px;
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 10px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .sync-btn {
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 3px 7px;
+      font-size: 9px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login / Referral Page Layer -->
+  <div class="site-layer">
+    <iframe
+      id="loginFrame"
+      class="site-iframe"
+      src="https://hgnice.bet/#/register?invitationCode=376851951983"
+      allow="clipboard-write; fullscreen"
+      referrerpolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+
+  <!-- Automatic Fallback Card if Target Site Blocks Iframe Embedding -->
+  <div class="embed-fallback" id="embedFallback">
+    <div class="fallback-card">
+      <div class="fallback-badge">JOY VAI • @BDT588</div>
+      <h2>HGNICE Direct Login</h2>
+      <p>
+        Target site blocks embedded preview inside another site. Tap below to open the official login page directly with <b>JOY VAI</b> referral.
+      </p>
+      <button class="direct-login-btn" onclick="goDirectLogin()">
+        Open Login Page Now
+      </button>
+      <div class="mini-row">
+        <button class="ghost-btn" onclick="copyRef()">Copy Referral</button>
+        <button class="ghost-btn" onclick="hideFallback()">Keep Panel View</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Bottom Chips -->
+  <div class="floating-chips">
+    <a class="chip-btn primary-chip" href="https://hgnice.bet/#/register?invitationCode=376851951983">
+      <span>💧</span>
+      <span>JOY VAI</span>
+    </a>
+    <a class="chip-btn" href="https://hgnice.bet/#/register?invitationCode=376851951983">
+      <span>↗</span>
+      <span>Login</span>
+    </a>
+  </div>
+
+  <!-- 3D Floating Water-Glass Panel -->
+  <div class="water-stage" id="waterStage">
+    <aside class="water-panel" id="waterPanel">
+      <div class="panel-header" id="panelDragHandle">
+        <div class="panel-brand">
+          <div class="drop-badge">💧</div>
+          <div class="panel-title-group">
+            <div class="name">JOY VAI</div>
+            <div class="sub">WINGO 30S • @BDT588</div>
+          </div>
+        </div>
+        <div class="panel-controls">
+          <button class="icon-circle-btn" id="lockToggleBtn" title="Lock / Unlock">🔒</button>
+          <button class="icon-circle-btn" id="minToggleBtn" title="Minimize">−</button>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <!-- Lock View -->
+        <div class="lock-card" id="lockCard">
+          <div class="lock-icon-ring">🔒</div>
+          <div class="lock-title">WATERFALL LOCK</div>
+          <div class="lock-sub">Enter access key to unlock panel</div>
+
+          <div class="pass-input-wrap">
+            <input
+              type="password"
+              class="pass-input"
+              id="passwordInput"
+              placeholder="Password..."
+              autocomplete="off"
+            />
+            <button type="button" class="eye-toggle" id="eyeBtn" title="Show/Hide">👁️</button>
+          </div>
+
+          <button type="button" class="unlock-btn" id="unlockBtn">
+            <span>🔓</span>
+            <span>UNLOCK PANEL</span>
+          </button>
+
+          <div class="error-msg" id="errorMsg"></div>
+        </div>
+
+        <!-- Unlocked Signal View -->
+        <div class="unlocked-view" id="unlockedView">
+          <div class="meta-strip">
+            <div class="period-box">
+              <div class="lbl">LIVE PERIOD</div>
+              <div class="val" id="periodVal">#00001</div>
+            </div>
+            <div class="timer-pill" id="timerVal">00:30</div>
+            <div class="api-tag" id="refreshBtn" title="Refresh Signal">↻ API</div>
+          </div>
+
+          <div class="signal-box">
+            <div class="signal-top">
+              <span>💧 SIZE</span>
+              <span id="rangeLabel">0 - 4</span>
+            </div>
+            <div class="signal-main" id="sizeVal">SMALL</div>
+            <div class="prob-bar-wrap">
+              <div class="prob-bar-fill" id="probBar" style="width: 78%;"></div>
+            </div>
+            <div class="prob-pct" id="probText">78%</div>
+          </div>
+
+          <!-- Probable 2 Numbers with Real Animated Water Inside Digits -->
+          <div class="numbers-grid">
+            <div class="num-head">
+              <span>PROBABLE 2 NUMBERS</span>
+              <span>WAVE ZIGZAG</span>
+            </div>
+
+            <div class="wave-num-card">
+              <svg class="wave-svg" viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient id="waterGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8" />
+                    <stop offset="55%" stop-color="#0284c7" />
+                    <stop offset="100%" stop-color="#0369a1" />
+                  </linearGradient>
+                  <linearGradient id="waterGradBack1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#7dd3fc" />
+                    <stop offset="100%" stop-color="#0ea5e9" />
+                  </linearGradient>
+                  <clipPath id="digitClip1">
+                    <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" id="svgDigit1">2</text>
+                  </clipPath>
+                </defs>
+
+                <circle cx="50" cy="50" r="45" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="3" />
+                <g clip-path="url(#digitClip1)">
+                  <rect x="0" y="0" width="100" height="100" fill="#e0f2fe" />
+                  <path id="backWave1" fill="url(#waterGradBack1)" opacity="0.72" />
+                  <path id="frontWave1" fill="url(#waterGrad1)" />
+                  <circle id="bubble1A" cx="35" cy="70" r="3" fill="#ffffff" opacity="0.7" />
+                  <circle id="bubble1B" cx="65" cy="80" r="2.2" fill="#ffffff" opacity="0.6" />
+                </g>
+                <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" fill="none" stroke="#0284c7" stroke-width="2" id="svgDigitOutline1">2</text>
+              </svg>
+              <span class="sub-lbl">P1</span>
+            </div>
+
+            <div class="wave-num-card">
+              <svg class="wave-svg" viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient id="waterGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8" />
+                    <stop offset="55%" stop-color="#0284c7" />
+                    <stop offset="100%" stop-color="#0369a1" />
+                  </linearGradient>
+                  <linearGradient id="waterGradBack2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#7dd3fc" />
+                    <stop offset="100%" stop-color="#0ea5e9" />
+                  </linearGradient>
+                  <clipPath id="digitClip2">
+                    <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" id="svgDigit2">4</text>
+                  </clipPath>
+                </defs>
+
+                <circle cx="50" cy="50" r="45" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="3" />
+                <g clip-path="url(#digitClip2)">
+                  <rect x="0" y="0" width="100" height="100" fill="#e0f2fe" />
+                  <path id="backWave2" fill="url(#waterGradBack2)" opacity="0.72" />
+                  <path id="frontWave2" fill="url(#waterGrad2)" />
+                  <circle id="bubble2A" cx="42" cy="74" r="2.8" fill="#ffffff" opacity="0.7" />
+                  <circle id="bubble2B" cx="62" cy="68" r="2.2" fill="#ffffff" opacity="0.6" />
+                </g>
+                <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" fill="none" stroke="#0284c7" stroke-width="2" id="svgDigitOutline2">4</text>
+              </svg>
+              <span class="sub-lbl">P2</span>
+            </div>
+          </div>
+
+          <!-- Market Period Sync Control (100% Match with Market) -->
+          <div class="sync-row">
+            <span>ID: @BDT588</span>
+            <button class="sync-btn" id="setPeriodBtn" title="Match Exact Market Period">Set Period</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const REFERRAL_URL = "https://hgnice.bet/#/register?invitationCode=376851951983";
+    const VALID_KEYS = ["ZAHIRUL22369", "JOY-WATER", "KAMRUL-WATER", "JOYVAI", "BDT588"];
+
+    function goDirectLogin() {
+      window.location.href = REFERRAL_URL;
+    }
+
+    async function copyRef() {
+      try {
+        await navigator.clipboard.writeText(REFERRAL_URL);
+        alert("Referral link copied!");
+      } catch {
+        alert(REFERRAL_URL);
+      }
+    }
+
+    const embedFallback = document.getElementById("embedFallback");
+    const loginFrame = document.getElementById("loginFrame");
+
+    function hideFallback() {
+      embedFallback.classList.remove("show");
+    }
+
+    setTimeout(() => {
+      try {
+        const doc = loginFrame.contentDocument;
+        if (!doc || doc.body.innerHTML.trim() === "") {
+          embedFallback.classList.add("show");
+        }
+      } catch {
+        // Cross-origin frame
+      }
+    }, 2800);
+
+    loginFrame.addEventListener("error", () => {
+      embedFallback.classList.add("show");
+    });
+
+    const panel = document.getElementById("waterPanel");
+    const dragHandle = document.getElementById("panelDragHandle");
+    const lockCard = document.getElementById("lockCard");
+    const unlockedView = document.getElementById("unlockedView");
+    const passInput = document.getElementById("passwordInput");
+    const eyeBtn = document.getElementById("eyeBtn");
+    const unlockBtn = document.getElementById("unlockBtn");
+    const errorMsg = document.getElementById("errorMsg");
+    const lockToggleBtn = document.getElementById("lockToggleBtn");
+    const minToggleBtn = document.getElementById("minToggleBtn");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const setPeriodBtn = document.getElementById("setPeriodBtn");
+
+    const periodVal = document.getElementById("periodVal");
+    const timerVal = document.getElementById("timerVal");
+    const sizeVal = document.getElementById("sizeVal");
+    const rangeLabel = document.getElementById("rangeLabel");
+    const probBar = document.getElementById("probBar");
+    const probText = document.getElementById("probText");
+
+    const svgDigit1 = document.getElementById("svgDigit1");
+    const svgDigitOutline1 = document.getElementById("svgDigitOutline1");
+    const svgDigit2 = document.getElementById("svgDigit2");
+    const svgDigitOutline2 = document.getElementById("svgDigitOutline2");
+
+    const frontWave1 = document.getElementById("frontWave1");
+    const backWave1 = document.getElementById("backWave1");
+    const frontWave2 = document.getElementById("frontWave2");
+    const backWave2 = document.getElementById("backWave2");
+
+    const bubble1A = document.getElementById("bubble1A");
+    const bubble1B = document.getElementById("bubble1B");
+    const bubble2A = document.getElementById("bubble2A");
+    const bubble2B = document.getElementById("bubble2B");
+
+    let isUnlocked = false;
+    let tiltX = 0;
+    let tiltY = 0;
+    let waveSurge = 1;
+
+    const STORAGE_OFFSET_KEY = "JOYVAI_WINGO30_OFFSET";
+    let periodOffset = Number(localStorage.getItem(STORAGE_OFFSET_KEY) || 0);
+
+    function getCurrentMarketPeriod() {
+      const slot30s = Math.floor(Date.now() / 30000);
+      return slot30s + periodOffset;
+    }
+
+    function getSecondsRemaining() {
+      const nowSec = Math.floor(Date.now() / 1000);
+      return 30 - (nowSec % 30);
+    }
+
+    let lastSyncedPeriod = getCurrentMarketPeriod();
+
+    function syncPeriodDisplay() {
+      const p = getCurrentMarketPeriod();
+      periodVal.textContent = "#" + p;
+      return p;
+    }
+
+    setPeriodBtn.addEventListener("click", () => {
+      const currentShown = getCurrentMarketPeriod();
+      const input = prompt("Enter exact current market period number:", String(currentShown));
+      if (!input) return;
+      const targetNum = Number(input.replace(/\D/g, ""));
+      if (!Number.isFinite(targetNum) || targetNum <= 0) return;
+
+      const baseSlot = Math.floor(Date.now() / 30000);
+      periodOffset = targetNum - baseSlot;
+      localStorage.setItem(STORAGE_OFFSET_KEY, String(periodOffset));
+      lastSyncedPeriod = syncPeriodDisplay();
+      if (isUnlocked) generateSignal();
+    });
+
+    function buildWavePath(phase, amp, baseY) {
+      let d = `M 0 110 L 0 ${baseY}`;
+      for (let x = 0; x <= 104; x += 6) {
+        const y = baseY + Math.sin(x * 0.085 + phase) * amp + Math.cos(x * 0.04 - phase * 0.7) * (amp * 0.45);
+        d += ` L ${x} ${y.toFixed(2)}`;
+      }
+      d += " L 104 110 Z";
+      return d;
+    }
+
+    let t = 0;
+    function animateWaves() {
+      t += 0.12 * waveSurge;
+      waveSurge = Math.max(1, waveSurge * 0.96);
+
+      const level1 = 44 + Math.sin(t * 0.7) * 4;
+      const level2 = 46 + Math.cos(t * 0.65) * 4;
+
+      frontWave1.setAttribute("d", buildWavePath(t, 4.8 * waveSurge, level1));
+      backWave1.setAttribute("d", buildWavePath(-t * 0.85 + 1.4, 4.0 * waveSurge, level1 - 3));
+
+      frontWave2.setAttribute("d", buildWavePath(t * 1.1 + 2.1, 4.8 * waveSurge, level2));
+      backWave2.setAttribute("d", buildWavePath(-t * 0.9 + 0.5, 4.0 * waveSurge, level2 - 3));
+
+      bubble1A.setAttribute("cy", (85 - ((t * 16) % 55)).toFixed(1));
+      bubble1B.setAttribute("cy", (85 - ((t * 19 + 12) % 55)).toFixed(1));
+      bubble2A.setAttribute("cy", (82 - ((t * 13 + 20) % 52)).toFixed(1));
+      bubble2B.setAttribute("cy", (85 - ((t * 15 + 28) % 55)).toFixed(1));
+
+      requestAnimationFrame(animateWaves);
+    }
+    requestAnimationFrame(animateWaves);
+
+    function apply3DTransform(extraScale = 1) {
+      panel.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${extraScale})`;
+    }
+
+    function updateTiltFromPoint(clientX, clientY) {
+      const rect = panel.getBoundingClientRect();
+      const nx = ((clientX - rect.left) / rect.width) * 2 - 1;
+      const ny = ((clientY - rect.top) / rect.height) * 2 - 1;
+      tiltY = Math.max(-15, Math.min(15, nx * 14));
+      tiltX = Math.max(-15, Math.min(15, -ny * 14));
+      panel.style.setProperty("--sheen-x", `${Math.max(0, Math.min(100, (nx + 1) * 50))}%`);
+      panel.style.setProperty("--sheen-y", `${Math.max(0, Math.min(100, (ny + 1) * 50))}%`);
+      apply3DTransform(1.02);
+    }
+
+    function resetTilt() {
+      tiltX = 0;
+      tiltY = 0;
+      panel.style.setProperty("--sheen-x", "50%");
+      panel.style.setProperty("--sheen-y", "20%");
+      apply3DTransform(1);
+    }
+
+    panel.addEventListener("mousemove", (e) => {
+      if (!isDragging) updateTiltFromPoint(e.clientX, e.clientY);
+    });
+    panel.addEventListener("mouseleave", () => {
+      if (!isDragging) resetTilt();
+    });
+
+    eyeBtn.addEventListener("click", () => {
+      passInput.type = passInput.type === "password" ? "text" : "password";
+    });
+
+    function setDigits(d1, d2) {
+      svgDigit1.textContent = d1;
+      svgDigitOutline1.textContent = d1;
+      svgDigit2.textContent = d2;
+      svgDigitOutline2.textContent = d2;
+      waveSurge = 2.2;
+    }
+
+    function generateSignal() {
+      const p = syncPeriodDisplay();
+      const seed = Math.abs(p * 37 + 19);
+      const isSmall = (seed % 10) < 5;
+      const pct = 73 + (seed % 18);
+
+      sizeVal.textContent = isSmall ? "SMALL" : "BIG";
+      rangeLabel.textContent = isSmall ? "0 - 4" : "5 - 9";
+      probBar.style.width = pct + "%";
+      probText.textContent = pct + "%";
+
+      const pool = isSmall ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
+      const firstIdx = seed % pool.length;
+      const secondIdx = (firstIdx + 2) % pool.length;
+      setDigits(pool[firstIdx], pool[secondIdx]);
+    }
+
+    function unlockPanel() {
+      const entered = passInput.value.trim().toUpperCase();
+      if (VALID_KEYS.includes(entered)) {
+        isUnlocked = true;
+        errorMsg.textContent = "";
+        lockCard.classList.add("hidden");
+        unlockedView.classList.add("active");
+        generateSignal();
+      } else {
+        errorMsg.textContent = "Invalid password! Try Zahirul22369";
+      }
+    }
+
+    unlockBtn.addEventListener("click", unlockPanel);
+    passInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") unlockPanel();
+    });
+
+    lockToggleBtn.addEventListener("click", () => {
+      if (!isUnlocked) {
+        passInput.focus();
+        return;
+      }
+      isUnlocked = false;
+      passInput.value = "";
+      unlockedView.classList.remove("active");
+      lockCard.classList.remove("hidden");
+    });
+
+    minToggleBtn.addEventListener("click", () => {
+      panel.classList.toggle("minimized");
+      minToggleBtn.textContent = panel.classList.contains("minimized") ? "+" : "−";
+    });
+
+    refreshBtn.addEventListener("click", generateSignal);
+
+    function tickClock() {
+      const rem = getSecondsRemaining();
+      timerVal.textContent = rem < 10 ? "00:0" + rem : "00:" + rem;
+
+      const currentP = getCurrentMarketPeriod();
+      if (currentP !== lastSyncedPeriod) {
+        lastSyncedPeriod = currentP;
+        syncPeriodDisplay();
+        if (isUnlocked) generateSignal();
+      } else {
+        syncPeriodDisplay();
+      }
+    }
+    tickClock();
+    setInterval(tickClock, 250);
+
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+    let lastX = 0;
+    let lastY = 0;
+
+    function startDrag(clientX, clientY) {
+      isDragging = true;
+      lastX = clientX;
+      lastY = clientY;
+      const rect = panel.getBoundingClientRect();
+      panel.style.left = rect.left + "px";
+      panel.style.top = rect.top + "px";
+      panel.style.right = "auto";
+      offsetX = clientX - rect.left;
+      offsetY = clientY - rect.top;
+      waveSurge = 2.0;
+      apply3DTransform(1.03);
+    }
+
+    function moveDrag(clientX, clientY) {
+      if (!isDragging) return;
+      const dx = clientX - lastX;
+      const dy = clientY - lastY;
+      lastX = clientX;
+      lastY = clientY;
+
+      const maxX = window.innerWidth - panel.offsetWidth - 6;
+      const maxY = window.innerHeight - panel.offsetHeight - 6;
+      const nextX = Math.max(6, Math.min(maxX, clientX - offsetX));
+      const nextY = Math.max(6, Math.min(maxY, clientY - offsetY));
+      panel.style.left = nextX + "px";
+      panel.style.top = nextY + "px";
+
+      tiltY = Math.max(-16, Math.min(16, dx * 2.2));
+      tiltX = Math.max(-16, Math.min(16, -dy * 2.2));
+      waveSurge = Math.min(2.8, waveSurge + (Math.abs(dx) + Math.abs(dy)) * 0.03);
+      apply3DTransform(1.03);
+    }
+
+    function endDrag() {
+      if (!isDragging) return;
+      isDragging = false;
+      resetTilt();
+    }
+
+    dragHandle.addEventListener("mousedown", (e) => {
+      if (e.target.closest("button")) return;
+      startDrag(e.clientX, e.clientY);
+    });
+    window.addEventListener("mousemove", (e) => moveDrag(e.clientX, e.clientY));
+    window.addEventListener("mouseup", endDrag);
+
+    dragHandle.addEventListener("touchstart", (e) => {
+      if (e.target.closest("button")) return;
+      const t = e.touches[0];
+      startDrag(t.clientX, t.clientY);
+    }, { passive: true });
+
+    window.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      const t = e.touches[0];
+      moveDrag(t.clientX, t.clientY);
+    }, { passive: true });
+
+    window.addEventListener("touchend", endDrag);
+  </script>
+</body>
+</html>
