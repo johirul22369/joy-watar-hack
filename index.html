@@ -157,8 +157,8 @@
       position: fixed;
       top: 76px;
       right: 12px;
-      width: 264px;
-      perspective: 920px;
+      width: 266px;
+      perspective: 950px;
       z-index: 50;
       user-select: none;
     }
@@ -171,23 +171,31 @@
       overflow: hidden;
       transform-style: preserve-3d;
       will-change: transform;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0.24) 0px,
-          rgba(255, 255, 255, 0.24) 6px,
-          rgba(125, 211, 252, 0.18) 6px,
-          rgba(125, 211, 252, 0.18) 12px
-        ),
-        linear-gradient(160deg, #dff9ff 0%, #aeeeff 48%, #67e8f9 100%);
+      background: linear-gradient(165deg, #e8fbff 0%, #bceeff 45%, #7ce2fc 100%);
       backdrop-filter: blur(14px);
       border: 1.5px solid rgba(255, 255, 255, 0.92);
       box-shadow:
-        0 24px 48px rgba(2, 132, 199, 0.3),
+        0 24px 48px rgba(2, 132, 199, 0.28),
         inset 0 1px 2px rgba(255, 255, 255, 0.95);
       transition: transform 0.12s ease-out;
     }
 
+    /* Animated Water Waves Across Full Popup */
+    .panel-water-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.72;
+    }
+
+    .panel-water-bg svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Specular 3D Highlight */
     .water-panel::before {
       content: "";
       position: absolute;
@@ -202,7 +210,7 @@
       z-index: 2;
     }
 
-    .water-panel > * {
+    .water-panel > *:not(.panel-water-bg) {
       position: relative;
       z-index: 3;
     }
@@ -217,7 +225,8 @@
       justify-content: space-between;
       cursor: grab;
       padding-bottom: 8px;
-      transform: translateZ(16px);
+      transform: translateZ(14px);
+      touch-action: none;
     }
 
     .panel-header:active { cursor: grabbing; }
@@ -251,7 +260,7 @@
       height: 22px;
       border-radius: 50%;
       border: none;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       color: #0f172a;
       font-weight: 900;
       font-size: 12px;
@@ -263,12 +272,12 @@
 
     /* Lock View */
     .lock-card {
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.84);
       border-radius: 16px;
       padding: 16px 12px;
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.92);
-      transform: translateZ(10px);
+      border: 1px solid rgba(255, 255, 255, 0.94);
+      transform: translateZ(8px);
     }
 
     .lock-card.hidden { display: none; }
@@ -346,13 +355,13 @@
     /* Unlocked View */
     .unlocked-view {
       display: none;
-      transform: translateZ(12px);
+      transform: translateZ(10px);
     }
 
     .unlocked-view.active { display: block; }
 
     .meta-strip {
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.88);
       border-radius: 12px;
       padding: 8px;
       display: flex;
@@ -385,7 +394,7 @@
     }
 
     .signal-box {
-      background: linear-gradient(135deg, #2dd4bf, #0284c7);
+      background: linear-gradient(135deg, rgba(45, 212, 191, 0.92), rgba(2, 132, 199, 0.94));
       border-radius: 14px;
       padding: 11px;
       color: #ffffff;
@@ -409,7 +418,7 @@
     }
 
     .prob-bar-wrap {
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.32);
       height: 6px;
       border-radius: 999px;
       overflow: hidden;
@@ -434,7 +443,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.88);
       border-radius: 14px;
       padding: 8px;
       text-align: center;
@@ -443,11 +452,25 @@
     .num-head {
       grid-column: 1 / -1;
       display: flex;
+      align-items: center;
       justify-content: space-between;
       font-size: 8px;
       font-weight: 900;
       color: #0369a1;
       margin-bottom: 2px;
+      gap: 4px;
+    }
+
+    .trend-badge {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+      padding: 2px 5px;
+      border-radius: 6px;
+      font-size: 7.5px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
     .wave-num-card {
@@ -458,9 +481,9 @@
     }
 
     .wave-svg {
-      width: 64px;
-      height: 64px;
-      filter: drop-shadow(0 5px 10px rgba(2, 132, 199, 0.28));
+      width: 66px;
+      height: 66px;
+      filter: drop-shadow(0 5px 10px rgba(2, 132, 199, 0.25));
     }
 
     .sub-lbl {
@@ -472,7 +495,7 @@
 
     .sync-row {
       margin-top: 8px;
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.88);
       border-radius: 10px;
       padding: 6px 8px;
       display: flex;
@@ -542,6 +565,24 @@
   <!-- 3D Floating Water-Glass Panel -->
   <div class="water-stage" id="waterStage">
     <aside class="water-panel" id="waterPanel">
+      <!-- Live Water Waves Across Full Popup -->
+      <div class="panel-water-bg">
+        <svg viewBox="0 0 300 420" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="popupWaterGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.42" />
+              <stop offset="100%" stop-color="#0284c7" stop-opacity="0.65" />
+            </linearGradient>
+            <linearGradient id="popupWaterGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7dd3fc" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.55" />
+            </linearGradient>
+          </defs>
+          <path id="panelWaveBack" fill="url(#popupWaterGrad2)" />
+          <path id="panelWaveFront" fill="url(#popupWaterGrad1)" />
+        </svg>
+      </div>
+
       <div class="panel-header" id="panelDragHandle">
         <div class="panel-brand">
           <div class="drop-badge">💧</div>
@@ -605,22 +646,22 @@
             <div class="prob-pct" id="probText">78%</div>
           </div>
 
-          <!-- Probable 2 Numbers with Real Animated Water Inside Digits -->
+          <!-- Probable 2 Numbers with Half-Filled Moving Water Inside Digits -->
           <div class="numbers-grid">
             <div class="num-head">
               <span>PROBABLE 2 NUMBERS</span>
-              <span>WAVE ZIGZAG</span>
+              <span class="trend-badge" id="trendBadge" title="Tap to switch or auto-sync market trend">WAVE ZIGZAG</span>
             </div>
 
             <div class="wave-num-card">
               <svg class="wave-svg" viewBox="0 0 100 100">
                 <defs>
-                  <linearGradient id="waterGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <linearGradient id="halfWater1" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" stop-color="#38bdf8" />
-                    <stop offset="55%" stop-color="#0284c7" />
+                    <stop offset="60%" stop-color="#0284c7" />
                     <stop offset="100%" stop-color="#0369a1" />
                   </linearGradient>
-                  <linearGradient id="waterGradBack1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient id="halfWaterBack1" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#7dd3fc" />
                     <stop offset="100%" stop-color="#0ea5e9" />
                   </linearGradient>
@@ -629,13 +670,15 @@
                   </clipPath>
                 </defs>
 
-                <circle cx="50" cy="50" r="45" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="3" />
+                <circle cx="50" cy="50" r="45" fill="#f8fdff" stroke="#7dd3fc" stroke-width="3" />
                 <g clip-path="url(#digitClip1)">
-                  <rect x="0" y="0" width="100" height="100" fill="#e0f2fe" />
-                  <path id="backWave1" fill="url(#waterGradBack1)" opacity="0.72" />
-                  <path id="frontWave1" fill="url(#waterGrad1)" />
-                  <circle id="bubble1A" cx="35" cy="70" r="3" fill="#ffffff" opacity="0.7" />
-                  <circle id="bubble1B" cx="65" cy="80" r="2.2" fill="#ffffff" opacity="0.6" />
+                  <!-- Top half light sky/glass background -->
+                  <rect x="0" y="0" width="100" height="100" fill="#e0f7ff" />
+                  <!-- Bottom half moving water waves -->
+                  <path id="backWave1" fill="url(#halfWaterBack1)" opacity="0.72" />
+                  <path id="frontWave1" fill="url(#halfWater1)" />
+                  <circle id="bubble1A" cx="34" cy="72" r="2.8" fill="#ffffff" opacity="0.75" />
+                  <circle id="bubble1B" cx="64" cy="78" r="2.1" fill="#ffffff" opacity="0.65" />
                 </g>
                 <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" fill="none" stroke="#0284c7" stroke-width="2" id="svgDigitOutline1">2</text>
               </svg>
@@ -645,12 +688,12 @@
             <div class="wave-num-card">
               <svg class="wave-svg" viewBox="0 0 100 100">
                 <defs>
-                  <linearGradient id="waterGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <linearGradient id="halfWater2" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" stop-color="#38bdf8" />
-                    <stop offset="55%" stop-color="#0284c7" />
+                    <stop offset="60%" stop-color="#0284c7" />
                     <stop offset="100%" stop-color="#0369a1" />
                   </linearGradient>
-                  <linearGradient id="waterGradBack2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient id="halfWaterBack2" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#7dd3fc" />
                     <stop offset="100%" stop-color="#0ea5e9" />
                   </linearGradient>
@@ -659,13 +702,13 @@
                   </clipPath>
                 </defs>
 
-                <circle cx="50" cy="50" r="45" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="3" />
+                <circle cx="50" cy="50" r="45" fill="#f8fdff" stroke="#7dd3fc" stroke-width="3" />
                 <g clip-path="url(#digitClip2)">
-                  <rect x="0" y="0" width="100" height="100" fill="#e0f2fe" />
-                  <path id="backWave2" fill="url(#waterGradBack2)" opacity="0.72" />
-                  <path id="frontWave2" fill="url(#waterGrad2)" />
-                  <circle id="bubble2A" cx="42" cy="74" r="2.8" fill="#ffffff" opacity="0.7" />
-                  <circle id="bubble2B" cx="62" cy="68" r="2.2" fill="#ffffff" opacity="0.6" />
+                  <rect x="0" y="0" width="100" height="100" fill="#e0f7ff" />
+                  <path id="backWave2" fill="url(#halfWaterBack2)" opacity="0.72" />
+                  <path id="frontWave2" fill="url(#halfWater2)" />
+                  <circle id="bubble2A" cx="40" cy="74" r="2.8" fill="#ffffff" opacity="0.75" />
+                  <circle id="bubble2B" cx="62" cy="70" r="2.1" fill="#ffffff" opacity="0.65" />
                 </g>
                 <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" fill="none" stroke="#0284c7" stroke-width="2" id="svgDigitOutline2">4</text>
               </svg>
@@ -673,7 +716,6 @@
             </div>
           </div>
 
-          <!-- Market Period Sync Control (100% Match with Market) -->
           <div class="sync-row">
             <span>ID: @BDT588</span>
             <button class="sync-btn" id="setPeriodBtn" title="Match Exact Market Period">Set Period</button>
@@ -686,6 +728,14 @@
   <script>
     const REFERRAL_URL = "https://hgnice.bet/#/register?invitationCode=376851951983";
     const VALID_KEYS = ["ZAHIRUL22369", "JOY-WATER", "KAMRUL-WATER", "JOYVAI", "BDT588"];
+
+    const MARKET_MODES = [
+      "WAVE ZIGZAG",
+      "DRAGON STREAK",
+      "DOUBLE WAVE",
+      "ALT 1-1",
+      "CHOPPY FLOW"
+    ];
 
     function goDirectLogin() {
       window.location.href = REFERRAL_URL;
@@ -722,6 +772,7 @@
       embedFallback.classList.add("show");
     });
 
+    const stage = document.getElementById("waterStage");
     const panel = document.getElementById("waterPanel");
     const dragHandle = document.getElementById("panelDragHandle");
     const lockCard = document.getElementById("lockCard");
@@ -734,6 +785,7 @@
     const minToggleBtn = document.getElementById("minToggleBtn");
     const refreshBtn = document.getElementById("refreshBtn");
     const setPeriodBtn = document.getElementById("setPeriodBtn");
+    const trendBadge = document.getElementById("trendBadge");
 
     const periodVal = document.getElementById("periodVal");
     const timerVal = document.getElementById("timerVal");
@@ -752,6 +804,9 @@
     const frontWave2 = document.getElementById("frontWave2");
     const backWave2 = document.getElementById("backWave2");
 
+    const panelWaveFront = document.getElementById("panelWaveFront");
+    const panelWaveBack = document.getElementById("panelWaveBack");
+
     const bubble1A = document.getElementById("bubble1A");
     const bubble1B = document.getElementById("bubble1B");
     const bubble2A = document.getElementById("bubble2A");
@@ -761,6 +816,7 @@
     let tiltX = 0;
     let tiltY = 0;
     let waveSurge = 1;
+    let manualModeIndex = null;
 
     const STORAGE_OFFSET_KEY = "JOYVAI_WINGO30_OFFSET";
     let periodOffset = Number(localStorage.getItem(STORAGE_OFFSET_KEY) || 0);
@@ -774,6 +830,25 @@
       const nowSec = Math.floor(Date.now() / 1000);
       return 30 - (nowSec % 30);
     }
+
+    function getMarketModeForPeriod(p) {
+      if (manualModeIndex !== null) {
+        return MARKET_MODES[manualModeIndex];
+      }
+      const blockIndex = Math.floor(Math.abs(p) / 4);
+      return MARKET_MODES[blockIndex % MARKET_MODES.length];
+    }
+
+    trendBadge.addEventListener("click", () => {
+      if (manualModeIndex === null) {
+        manualModeIndex = 0;
+      } else if (manualModeIndex < MARKET_MODES.length - 1) {
+        manualModeIndex += 1;
+      } else {
+        manualModeIndex = null;
+      }
+      if (isUnlocked) generateSignal();
+    });
 
     let lastSyncedPeriod = getCurrentMarketPeriod();
 
@@ -793,38 +868,56 @@
       const baseSlot = Math.floor(Date.now() / 30000);
       periodOffset = targetNum - baseSlot;
       localStorage.setItem(STORAGE_OFFSET_KEY, String(periodOffset));
+      manualModeIndex = null;
       lastSyncedPeriod = syncPeriodDisplay();
       if (isUnlocked) generateSignal();
     });
 
-    function buildWavePath(phase, amp, baseY) {
-      let d = `M 0 110 L 0 ${baseY}`;
-      for (let x = 0; x <= 104; x += 6) {
-        const y = baseY + Math.sin(x * 0.085 + phase) * amp + Math.cos(x * 0.04 - phase * 0.7) * (amp * 0.45);
+    function buildHalfDigitWavePath(phase, amp, baseY) {
+      let d = `M -4 105 L -4 ${baseY}`;
+      for (let x = -4; x <= 106; x += 5) {
+        const y = baseY + Math.sin(x * 0.095 + phase) * amp + Math.cos(x * 0.05 - phase * 0.8) * (amp * 0.35);
         d += ` L ${x} ${y.toFixed(2)}`;
       }
-      d += " L 104 110 Z";
+      d += " L 106 105 Z";
+      return d;
+    }
+
+    function buildPanelWavePath(phase, amp, baseY) {
+      let d = `M -10 430 L -10 ${baseY}`;
+      for (let x = -10; x <= 310; x += 12) {
+        const y = baseY + Math.sin(x * 0.032 + phase) * amp + Math.cos(x * 0.018 - phase * 0.6) * (amp * 0.45);
+        d += ` L ${x} ${y.toFixed(2)}`;
+      }
+      d += " L 310 430 Z";
       return d;
     }
 
     let t = 0;
     function animateWaves() {
-      t += 0.12 * waveSurge;
+      t += 0.11 * waveSurge;
       waveSurge = Math.max(1, waveSurge * 0.96);
 
-      const level1 = 44 + Math.sin(t * 0.7) * 4;
-      const level2 = 46 + Math.cos(t * 0.65) * 4;
+      // Half-height (~52-55 out of 100) water level inside each digit
+      const halfLevel1 = 52 + Math.sin(t * 0.75) * 2.5;
+      const halfLevel2 = 53 + Math.cos(t * 0.7) * 2.5;
 
-      frontWave1.setAttribute("d", buildWavePath(t, 4.8 * waveSurge, level1));
-      backWave1.setAttribute("d", buildWavePath(-t * 0.85 + 1.4, 4.0 * waveSurge, level1 - 3));
+      frontWave1.setAttribute("d", buildHalfDigitWavePath(t, 4.2 * waveSurge, halfLevel1));
+      backWave1.setAttribute("d", buildHalfDigitWavePath(-t * 0.85 + 1.3, 3.4 * waveSurge, halfLevel1 - 2.5));
 
-      frontWave2.setAttribute("d", buildWavePath(t * 1.1 + 2.1, 4.8 * waveSurge, level2));
-      backWave2.setAttribute("d", buildWavePath(-t * 0.9 + 0.5, 4.0 * waveSurge, level2 - 3));
+      frontWave2.setAttribute("d", buildHalfDigitWavePath(t * 1.05 + 2.0, 4.2 * waveSurge, halfLevel2));
+      backWave2.setAttribute("d", buildHalfDigitWavePath(-t * 0.9 + 0.6, 3.4 * waveSurge, halfLevel2 - 2.5));
 
-      bubble1A.setAttribute("cy", (85 - ((t * 16) % 55)).toFixed(1));
-      bubble1B.setAttribute("cy", (85 - ((t * 19 + 12) % 55)).toFixed(1));
-      bubble2A.setAttribute("cy", (82 - ((t * 13 + 20) % 52)).toFixed(1));
-      bubble2B.setAttribute("cy", (85 - ((t * 15 + 28) % 55)).toFixed(1));
+      // Full popup lower/mid water wave
+      const pLevel = 265 + Math.sin(t * 0.55) * 10;
+      panelWaveFront.setAttribute("d", buildPanelWavePath(t * 0.8, 11 * waveSurge, pLevel));
+      panelWaveBack.setAttribute("d", buildPanelWavePath(-t * 0.65 + 1.1, 9 * waveSurge, pLevel - 14));
+
+      // Gentle bubbles in lower water half of digit
+      bubble1A.setAttribute("cy", (88 - ((t * 12) % 30)).toFixed(1));
+      bubble1B.setAttribute("cy", (88 - ((t * 14 + 10) % 30)).toFixed(1));
+      bubble2A.setAttribute("cy", (88 - ((t * 11 + 16) % 30)).toFixed(1));
+      bubble2B.setAttribute("cy", (88 - ((t * 13 + 22) % 30)).toFixed(1));
 
       requestAnimationFrame(animateWaves);
     }
@@ -838,11 +931,11 @@
       const rect = panel.getBoundingClientRect();
       const nx = ((clientX - rect.left) / rect.width) * 2 - 1;
       const ny = ((clientY - rect.top) / rect.height) * 2 - 1;
-      tiltY = Math.max(-15, Math.min(15, nx * 14));
-      tiltX = Math.max(-15, Math.min(15, -ny * 14));
+      tiltY = Math.max(-14, Math.min(14, nx * 12));
+      tiltX = Math.max(-14, Math.min(14, -ny * 12));
       panel.style.setProperty("--sheen-x", `${Math.max(0, Math.min(100, (nx + 1) * 50))}%`);
       panel.style.setProperty("--sheen-y", `${Math.max(0, Math.min(100, (ny + 1) * 50))}%`);
-      apply3DTransform(1.02);
+      apply3DTransform(1.015);
     }
 
     function resetTilt() {
@@ -869,15 +962,28 @@
       svgDigitOutline1.textContent = d1;
       svgDigit2.textContent = d2;
       svgDigitOutline2.textContent = d2;
-      waveSurge = 2.2;
+      waveSurge = 2.0;
     }
 
     function generateSignal() {
       const p = syncPeriodDisplay();
-      const seed = Math.abs(p * 37 + 19);
-      const isSmall = (seed % 10) < 5;
-      const pct = 73 + (seed % 18);
+      const mode = getMarketModeForPeriod(p);
+      trendBadge.textContent = mode;
 
+      const seed = Math.abs(p * 37 + 19);
+      let isSmall;
+
+      if (mode === "DRAGON STREAK") {
+        isSmall = (Math.floor(Math.abs(p) / 3) % 2) === 0;
+      } else if (mode === "ALT 1-1") {
+        isSmall = (Math.abs(p) % 2) === 0;
+      } else if (mode === "DOUBLE WAVE") {
+        isSmall = (Math.floor(Math.abs(p) / 2) % 2) === 0;
+      } else {
+        isSmall = (seed % 10) < 5;
+      }
+
+      const pct = 74 + (seed % 17);
       sizeVal.textContent = isSmall ? "SMALL" : "BIG";
       rangeLabel.textContent = isSmall ? "0 - 4" : "5 - 9";
       probBar.style.width = pct + "%";
@@ -941,47 +1047,57 @@
     tickClock();
     setInterval(tickClock, 250);
 
+    // Fixed Drag Logic: Only starts when dragging header handle, never jumps on click/tap
     let isDragging = false;
-    let offsetX = 0;
-    let offsetY = 0;
-    let lastX = 0;
-    let lastY = 0;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let stageStartLeft = 0;
+    let stageStartTop = 0;
+    let prevMoveX = 0;
+    let prevMoveY = 0;
 
-    function startDrag(clientX, clientY) {
+    function beginDrag(clientX, clientY) {
+      const rect = stage.getBoundingClientRect();
+      stage.style.left = rect.left + "px";
+      stage.style.top = rect.top + "px";
+      stage.style.right = "auto";
+
       isDragging = true;
-      lastX = clientX;
-      lastY = clientY;
-      const rect = panel.getBoundingClientRect();
-      panel.style.left = rect.left + "px";
-      panel.style.top = rect.top + "px";
-      panel.style.right = "auto";
-      offsetX = clientX - rect.left;
-      offsetY = clientY - rect.top;
-      waveSurge = 2.0;
-      apply3DTransform(1.03);
+      dragStartX = clientX;
+      dragStartY = clientY;
+      stageStartLeft = rect.left;
+      stageStartTop = rect.top;
+      prevMoveX = clientX;
+      prevMoveY = clientY;
+      waveSurge = 1.8;
+      apply3DTransform(1.025);
     }
 
-    function moveDrag(clientX, clientY) {
+    function stepDrag(clientX, clientY) {
       if (!isDragging) return;
-      const dx = clientX - lastX;
-      const dy = clientY - lastY;
-      lastX = clientX;
-      lastY = clientY;
+      const deltaFromStartX = clientX - dragStartX;
+      const deltaFromStartY = clientY - dragStartY;
 
-      const maxX = window.innerWidth - panel.offsetWidth - 6;
-      const maxY = window.innerHeight - panel.offsetHeight - 6;
-      const nextX = Math.max(6, Math.min(maxX, clientX - offsetX));
-      const nextY = Math.max(6, Math.min(maxY, clientY - offsetY));
-      panel.style.left = nextX + "px";
-      panel.style.top = nextY + "px";
+      const stepDx = clientX - prevMoveX;
+      const stepDy = clientY - prevMoveY;
+      prevMoveX = clientX;
+      prevMoveY = clientY;
 
-      tiltY = Math.max(-16, Math.min(16, dx * 2.2));
-      tiltX = Math.max(-16, Math.min(16, -dy * 2.2));
-      waveSurge = Math.min(2.8, waveSurge + (Math.abs(dx) + Math.abs(dy)) * 0.03);
-      apply3DTransform(1.03);
+      const maxX = window.innerWidth - stage.offsetWidth - 6;
+      const maxY = window.innerHeight - stage.offsetHeight - 6;
+      const nextX = Math.max(6, Math.min(maxX, stageStartLeft + deltaFromStartX));
+      const nextY = Math.max(6, Math.min(maxY, stageStartTop + deltaFromStartY));
+
+      stage.style.left = nextX + "px";
+      stage.style.top = nextY + "px";
+
+      tiltY = Math.max(-14, Math.min(14, stepDx * 2.0));
+      tiltX = Math.max(-14, Math.min(14, -stepDy * 2.0));
+      waveSurge = Math.min(2.5, waveSurge + (Math.abs(stepDx) + Math.abs(stepDy)) * 0.025);
+      apply3DTransform(1.025);
     }
 
-    function endDrag() {
+    function finishDrag() {
       if (!isDragging) return;
       isDragging = false;
       resetTilt();
@@ -989,24 +1105,26 @@
 
     dragHandle.addEventListener("mousedown", (e) => {
       if (e.target.closest("button")) return;
-      startDrag(e.clientX, e.clientY);
+      e.preventDefault();
+      beginDrag(e.clientX, e.clientY);
     });
-    window.addEventListener("mousemove", (e) => moveDrag(e.clientX, e.clientY));
-    window.addEventListener("mouseup", endDrag);
+    window.addEventListener("mousemove", (e) => stepDrag(e.clientX, e.clientY));
+    window.addEventListener("mouseup", finishDrag);
 
     dragHandle.addEventListener("touchstart", (e) => {
       if (e.target.closest("button")) return;
       const t = e.touches[0];
-      startDrag(t.clientX, t.clientY);
+      beginDrag(t.clientX, t.clientY);
     }, { passive: true });
 
     window.addEventListener("touchmove", (e) => {
       if (!isDragging) return;
       const t = e.touches[0];
-      moveDrag(t.clientX, t.clientY);
+      stepDrag(t.clientX, t.clientY);
     }, { passive: true });
 
-    window.addEventListener("touchend", endDrag);
+    window.addEventListener("touchend", finishDrag);
+    window.addEventListener("touchcancel", finishDrag);
   </script>
 </body>
 </html>
