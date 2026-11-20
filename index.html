@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>JOY VAI — HGNICE 3D Live Water Panel</title>
+  <title>JOY VAI — HGNICE Register & 3D Water Panel</title>
   <style>
     * {
       box-sizing: border-box;
@@ -15,147 +15,184 @@
 
     html, body {
       width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #0f172a;
+      min-height: 100%;
+      background: #f5f6fa;
+      overflow-x: hidden;
     }
 
-    /* Fullscreen Login/Site Frame Layer */
-    .site-layer {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+    /* HGNICE Register Page Layer */
+    .reg-page {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #f6f7fb;
+      padding-bottom: 32px;
+      position: relative;
       z-index: 1;
-      background: #f8fafc;
     }
 
-    .site-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
+    .reg-header {
+      background: linear-gradient(90deg, #ff7b6b 0%, #ff585d 100%);
+      color: #ffffff;
+      padding: 14px 16px 22px;
     }
 
-    /* Fallback if target site blocks embedding in iframe */
-    .embed-fallback {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(160deg, #fff1f2 0%, #ffe4e6 45%, #f8fafc 100%);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      z-index: 2;
-    }
-
-    .embed-fallback.show {
+    .reg-top-bar {
       display: flex;
-    }
-
-    .fallback-card {
-      width: 100%;
-      max-width: 380px;
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 22px 18px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
-      border: 1px solid #fecdd3;
-    }
-
-    .fallback-badge {
-      display: inline-block;
-      background: #fee2e2;
-      color: #dc2626;
-      font-size: 11px;
-      font-weight: 900;
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 10px;
-    }
-
-    .fallback-card h2 {
-      font-size: 20px;
-      font-weight: 900;
-      color: #111827;
-      margin-bottom: 6px;
-    }
-
-    .fallback-card p {
-      font-size: 12px;
-      color: #4b5563;
-      line-height: 1.5;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 14px;
     }
 
-    .direct-login-btn {
-      width: 100%;
-      padding: 12px 16px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #ef4444, #f97316);
-      color: #ffffff;
-      font-size: 13px;
+    .back-arrow {
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .hgnice-logo {
+      font-size: 22px;
       font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+      letter-spacing: -0.6px;
+      font-style: italic;
     }
 
-    .mini-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .ghost-btn {
-      flex: 1;
-      padding: 9px 10px;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      color: #1e293b;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    /* Bottom Floating Quick Chips */
-    .floating-chips {
-      position: fixed;
-      bottom: 16px;
-      left: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      z-index: 45;
-    }
-
-    .chip-btn {
-      background: #ffffff;
-      color: #0f172a;
-      border: 1px solid #bae6fd;
-      border-radius: 10px;
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: 800;
+    .lang-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
-      cursor: pointer;
-      text-decoration: none;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
     }
 
-    .chip-btn.primary-chip {
-      color: #0369a1;
+    .reg-header h1 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .reg-header p {
+      font-size: 12px;
+      opacity: 0.92;
+    }
+
+    .reg-tab-box {
+      background: #ffffff;
+      padding: 14px 16px 0;
+      border-bottom: 1px solid #eceef4;
+    }
+
+    .reg-tab-active {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: #ff5b5e;
+      font-size: 14px;
+      font-weight: 800;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #ff5b5e;
+    }
+
+    .reg-form {
+      padding: 16px;
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+
+    .field-label .ico {
+      color: #ff5b5e;
+      font-size: 15px;
+    }
+
+    .phone-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .code-box {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    .input-box {
+      flex: 1;
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #111827;
+      outline: none;
+    }
+
+    .input-box::placeholder {
+      color: #9ca3af;
+    }
+
+    .agree-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #4b5563;
+      margin: 14px 0 20px;
+    }
+
+    .agree-row span.pink {
+      color: #ff5b5e;
+      font-weight: 700;
+    }
+
+    .reg-submit-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff8577 0%, #ff6368 100%);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(255, 99, 104, 0.28);
+    }
+
+    .direct-site-link {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #0284c7;
+      text-decoration: none;
     }
 
     /* 3D Perspective Stage for Floating Water Panel */
     .water-stage {
       position: fixed;
-      top: 76px;
+      top: 84px;
       right: 12px;
       width: 266px;
       perspective: 950px;
@@ -180,7 +217,6 @@
       transition: transform 0.12s ease-out;
     }
 
-    /* Animated Water Waves Across Full Popup */
     .panel-water-bg {
       position: absolute;
       inset: 0;
@@ -195,7 +231,6 @@
       display: block;
     }
 
-    /* Specular 3D Highlight */
     .water-panel::before {
       content: "";
       position: absolute;
@@ -270,7 +305,6 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     }
 
-    /* Lock View */
     .lock-card {
       background: rgba(255, 255, 255, 0.84);
       border-radius: 16px;
@@ -352,7 +386,6 @@
       min-height: 14px;
     }
 
-    /* Unlocked View */
     .unlocked-view {
       display: none;
       transform: translateZ(10px);
@@ -521,51 +554,65 @@
 </head>
 <body>
 
-  <!-- Login / Referral Page Layer -->
-  <div class="site-layer">
-    <iframe
-      id="loginFrame"
-      class="site-iframe"
-      src="https://hgnice.bet/#/register?invitationCode=376851951983"
-      allow="clipboard-write; fullscreen"
-      referrerpolicy="no-referrer-when-downgrade"
-    ></iframe>
-  </div>
+  <!-- HGNICE Register Page -->
+  <div class="reg-page">
+    <div class="reg-header">
+      <div class="reg-top-bar">
+        <span class="back-arrow" onclick="goOfficial()">‹</span>
+        <span class="hgnice-logo">HGNICE</span>
+        <span class="lang-badge">🇺🇸 EN</span>
+      </div>
+      <h1>Register</h1>
+      <p>Please register by phone number or email</p>
+    </div>
 
-  <!-- Automatic Fallback Card if Target Site Blocks Iframe Embedding -->
-  <div class="embed-fallback" id="embedFallback">
-    <div class="fallback-card">
-      <div class="fallback-badge">JOY VAI • @BDT588</div>
-      <h2>HGNICE Direct Login</h2>
-      <p>
-        Target site blocks embedded preview inside another site. Tap below to open the official login page directly with <b>JOY VAI</b> referral.
-      </p>
-      <button class="direct-login-btn" onclick="goDirectLogin()">
-        Open Login Page Now
-      </button>
-      <div class="mini-row">
-        <button class="ghost-btn" onclick="copyRef()">Copy Referral</button>
-        <button class="ghost-btn" onclick="hideFallback()">Keep Panel View</button>
+    <div class="reg-tab-box">
+      <div class="reg-tab-active">
+        <span>📱</span>
+        <span>Register your phone</span>
       </div>
     </div>
-  </div>
 
-  <!-- Quick Bottom Chips -->
-  <div class="floating-chips">
-    <a class="chip-btn primary-chip" href="https://hgnice.bet/#/register?invitationCode=376851951983">
-      <span>💧</span>
-      <span>JOY VAI</span>
-    </a>
-    <a class="chip-btn" href="https://hgnice.bet/#/register?invitationCode=376851951983">
-      <span>↗</span>
-      <span>Login</span>
-    </a>
+    <form class="reg-form" onsubmit="event.preventDefault(); goOfficial();">
+      <div class="field-group">
+        <div class="field-label"><span class="ico">📱</span><span>Phone number</span></div>
+        <div class="phone-row">
+          <div class="code-box">+880 ⌄</div>
+          <input type="tel" class="input-box" placeholder="Please enter the phone number" />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label"><span class="ico">🔒</span><span>Set password</span></div>
+        <input type="password" class="input-box" placeholder="Set password" />
+      </div>
+
+      <div class="field-group">
+        <div class="field-label"><span class="ico">🔒</span><span>Confirm password</span></div>
+        <input type="password" class="input-box" placeholder="Confirm password" />
+      </div>
+
+      <div class="field-group">
+        <div class="field-label"><span class="ico">📩</span><span>Invite code</span></div>
+        <input type="text" class="input-box" value="376851951983" readonly />
+      </div>
+
+      <div class="agree-row">
+        <input type="checkbox" checked />
+        <span>I have read and agree <span class="pink">【Privacy Agreement】</span></span>
+      </div>
+
+      <button type="submit" class="reg-submit-btn">Register</button>
+
+      <a class="direct-site-link" href="https://hgnice.bet/#/register?invitationCode=376851951983">
+        Open Official HGNICE Link • JOY VAI (@BDT588)
+      </a>
+    </form>
   </div>
 
   <!-- 3D Floating Water-Glass Panel -->
   <div class="water-stage" id="waterStage">
     <aside class="water-panel" id="waterPanel">
-      <!-- Live Water Waves Across Full Popup -->
       <div class="panel-water-bg">
         <svg viewBox="0 0 300 420" preserveAspectRatio="none">
           <defs>
@@ -598,7 +645,6 @@
       </div>
 
       <div class="panel-body">
-        <!-- Lock View -->
         <div class="lock-card" id="lockCard">
           <div class="lock-icon-ring">🔒</div>
           <div class="lock-title">WATERFALL LOCK</div>
@@ -623,7 +669,6 @@
           <div class="error-msg" id="errorMsg"></div>
         </div>
 
-        <!-- Unlocked Signal View -->
         <div class="unlocked-view" id="unlockedView">
           <div class="meta-strip">
             <div class="period-box">
@@ -646,7 +691,6 @@
             <div class="prob-pct" id="probText">78%</div>
           </div>
 
-          <!-- Probable 2 Numbers with Half-Filled Moving Water Inside Digits -->
           <div class="numbers-grid">
             <div class="num-head">
               <span>PROBABLE 2 NUMBERS</span>
@@ -672,9 +716,7 @@
 
                 <circle cx="50" cy="50" r="45" fill="#f8fdff" stroke="#7dd3fc" stroke-width="3" />
                 <g clip-path="url(#digitClip1)">
-                  <!-- Top half light sky/glass background -->
                   <rect x="0" y="0" width="100" height="100" fill="#e0f7ff" />
-                  <!-- Bottom half moving water waves -->
                   <path id="backWave1" fill="url(#halfWaterBack1)" opacity="0.72" />
                   <path id="frontWave1" fill="url(#halfWater1)" />
                   <circle id="bubble1A" cx="34" cy="72" r="2.8" fill="#ffffff" opacity="0.75" />
@@ -728,49 +770,11 @@
   <script>
     const REFERRAL_URL = "https://hgnice.bet/#/register?invitationCode=376851951983";
     const VALID_KEYS = ["ZAHIRUL22369", "JOY-WATER", "KAMRUL-WATER", "JOYVAI", "BDT588"];
+    const MARKET_MODES = ["WAVE ZIGZAG", "DRAGON STREAK", "DOUBLE WAVE", "ALT 1-1", "CHOPPY FLOW"];
 
-    const MARKET_MODES = [
-      "WAVE ZIGZAG",
-      "DRAGON STREAK",
-      "DOUBLE WAVE",
-      "ALT 1-1",
-      "CHOPPY FLOW"
-    ];
-
-    function goDirectLogin() {
+    function goOfficial() {
       window.location.href = REFERRAL_URL;
     }
-
-    async function copyRef() {
-      try {
-        await navigator.clipboard.writeText(REFERRAL_URL);
-        alert("Referral link copied!");
-      } catch {
-        alert(REFERRAL_URL);
-      }
-    }
-
-    const embedFallback = document.getElementById("embedFallback");
-    const loginFrame = document.getElementById("loginFrame");
-
-    function hideFallback() {
-      embedFallback.classList.remove("show");
-    }
-
-    setTimeout(() => {
-      try {
-        const doc = loginFrame.contentDocument;
-        if (!doc || doc.body.innerHTML.trim() === "") {
-          embedFallback.classList.add("show");
-        }
-      } catch {
-        // Cross-origin frame
-      }
-    }, 2800);
-
-    loginFrame.addEventListener("error", () => {
-      embedFallback.classList.add("show");
-    });
 
     const stage = document.getElementById("waterStage");
     const panel = document.getElementById("waterPanel");
@@ -832,21 +836,15 @@
     }
 
     function getMarketModeForPeriod(p) {
-      if (manualModeIndex !== null) {
-        return MARKET_MODES[manualModeIndex];
-      }
+      if (manualModeIndex !== null) return MARKET_MODES[manualModeIndex];
       const blockIndex = Math.floor(Math.abs(p) / 4);
       return MARKET_MODES[blockIndex % MARKET_MODES.length];
     }
 
     trendBadge.addEventListener("click", () => {
-      if (manualModeIndex === null) {
-        manualModeIndex = 0;
-      } else if (manualModeIndex < MARKET_MODES.length - 1) {
-        manualModeIndex += 1;
-      } else {
-        manualModeIndex = null;
-      }
+      if (manualModeIndex === null) manualModeIndex = 0;
+      else if (manualModeIndex < MARKET_MODES.length - 1) manualModeIndex += 1;
+      else manualModeIndex = null;
       if (isUnlocked) generateSignal();
     });
 
@@ -898,7 +896,6 @@
       t += 0.11 * waveSurge;
       waveSurge = Math.max(1, waveSurge * 0.96);
 
-      // Half-height (~52-55 out of 100) water level inside each digit
       const halfLevel1 = 52 + Math.sin(t * 0.75) * 2.5;
       const halfLevel2 = 53 + Math.cos(t * 0.7) * 2.5;
 
@@ -908,12 +905,10 @@
       frontWave2.setAttribute("d", buildHalfDigitWavePath(t * 1.05 + 2.0, 4.2 * waveSurge, halfLevel2));
       backWave2.setAttribute("d", buildHalfDigitWavePath(-t * 0.9 + 0.6, 3.4 * waveSurge, halfLevel2 - 2.5));
 
-      // Full popup lower/mid water wave
       const pLevel = 265 + Math.sin(t * 0.55) * 10;
       panelWaveFront.setAttribute("d", buildPanelWavePath(t * 0.8, 11 * waveSurge, pLevel));
       panelWaveBack.setAttribute("d", buildPanelWavePath(-t * 0.65 + 1.1, 9 * waveSurge, pLevel - 14));
 
-      // Gentle bubbles in lower water half of digit
       bubble1A.setAttribute("cy", (88 - ((t * 12) % 30)).toFixed(1));
       bubble1B.setAttribute("cy", (88 - ((t * 14 + 10) % 30)).toFixed(1));
       bubble2A.setAttribute("cy", (88 - ((t * 11 + 16) % 30)).toFixed(1));
@@ -1047,7 +1042,6 @@
     tickClock();
     setInterval(tickClock, 250);
 
-    // Fixed Drag Logic: Only starts when dragging header handle, never jumps on click/tap
     let isDragging = false;
     let dragStartX = 0;
     let dragStartY = 0;
