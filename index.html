@@ -17,7 +17,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #090d16;
+      background: #070c17;
     }
 
     /* Fullscreen Target Page Frame */
@@ -27,7 +27,7 @@
       width: 100%;
       height: 100%;
       z-index: 1;
-      background: #090d16;
+      background: #070c17;
     }
 
     .site-iframe {
@@ -37,13 +37,13 @@
       display: block;
     }
 
-    /* Floating Predictor Stage */
+    /* Floating Popup Stage */
     .pred-stage {
       position: fixed;
-      top: 108px;
-      left: 10px;
-      width: 318px;
-      max-width: calc(100vw - 20px);
+      top: 106px;
+      left: 8px;
+      width: 326px;
+      max-width: calc(100vw - 16px);
       z-index: 50;
       user-select: none;
     }
@@ -51,15 +51,15 @@
     .pred-card {
       width: 100%;
       border-radius: 14px;
-      padding: 10px 10px 9px;
-      background: radial-gradient(circle at 50% 18%, #162845 0%, #0a1222 62%, #060b14 100%);
+      padding: 9px 10px 8px;
+      background: radial-gradient(circle at 50% 15%, #162a4a 0%, #0b1528 58%, #060b14 100%);
       border: 1.5px solid #22d3ee;
       box-shadow:
-        0 0 18px rgba(34, 211, 238, 0.28),
-        0 18px 36px rgba(0, 0, 0, 0.65);
+        0 0 20px rgba(34, 211, 238, 0.34),
+        0 18px 36px rgba(0, 0, 0, 0.72);
       color: #ffffff;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .pred-card.hidden-panel {
@@ -89,79 +89,116 @@
       display: inline-flex;
     }
 
-    /* Top Header */
+    /* Header Section matching reference */
     .pred-header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
       cursor: grab;
       touch-action: none;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
+      position: relative;
     }
 
     .pred-header:active {
       cursor: grabbing;
     }
 
-    .brand-left {
+    .brand-block {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      line-height: 1.05;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding-left: 12px;
     }
 
     .play-smarter {
+      align-self: flex-start;
+      margin-left: -4px;
       font-size: 7px;
       font-weight: 900;
-      letter-spacing: 0.8px;
-      color: #facc15;
-      margin-bottom: 2px;
+      letter-spacing: 0.7px;
+      color: #4ade80;
+      text-shadow: 0 0 6px rgba(74, 222, 128, 0.45);
+      line-height: 1;
+      margin-bottom: 1px;
+    }
+
+    .crown-ico {
+      font-size: 11px;
+      line-height: 1;
+      color: #fbbf24;
+      filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.75));
+      margin-bottom: -2px;
+    }
+
+    .wing-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .wing-left, .wing-right {
+      font-size: 13px;
+      font-weight: 900;
+      color: #22d3ee;
+      text-shadow: 0 0 10px rgba(34, 211, 238, 0.85);
+      letter-spacing: -2px;
+      line-height: 1;
     }
 
     .main-title {
-      font-size: 24px;
+      font-size: 25px;
       font-weight: 900;
-      letter-spacing: 0.5px;
       font-style: italic;
-      background: linear-gradient(180deg, #fde047 0%, #f59e0b 55%, #ea580c 100%);
+      letter-spacing: 0.6px;
+      line-height: 1.02;
+      background: linear-gradient(180deg, #fef08a 0%, #f59e0b 52%, #ea580c 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
     }
 
     .sub-pill {
       margin-top: 3px;
       display: inline-block;
-      background: #1e293b;
+      background: linear-gradient(90deg, #0f172a 0%, #172554 50%, #0f172a 100%);
       border: 1px solid #38bdf8;
       color: #e0f2fe;
       font-size: 8px;
       font-weight: 900;
-      letter-spacing: 0.6px;
-      padding: 2px 7px;
+      letter-spacing: 0.65px;
+      padding: 2px 9px;
       border-radius: 999px;
-      width: fit-content;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
+      position: relative;
+      z-index: 4;
     }
 
     .mini-ctrl {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.92);
       border: 1px solid #38bdf8;
       color: #7dd3fc;
       border-radius: 5px;
-      padding: 3px 6px;
-      font-size: 8px;
+      padding: 3px 5px;
+      font-size: 7.5px;
       font-weight: 900;
       cursor: pointer;
     }
 
     .hide-btn {
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.94);
       border: 1px solid #22d3ee;
       color: #67e8f9;
       border-radius: 5px;
@@ -173,8 +210,8 @@
 
     /* Lock View */
     .lock-box {
-      background: rgba(10, 18, 34, 0.92);
-      border: 1px solid rgba(56, 189, 248, 0.45);
+      background: rgba(9, 17, 32, 0.94);
+      border: 1px solid rgba(56, 189, 248, 0.5);
       border-radius: 10px;
       padding: 12px 10px;
       text-align: center;
@@ -236,7 +273,7 @@
       color: #f87171;
     }
 
-    /* Unlocked 3-Column Grid matching screenshot */
+    /* Unlocked 3-Column Layout */
     .panel-content {
       display: none;
     }
@@ -247,43 +284,80 @@
 
     .three-col {
       display: grid;
-      grid-template-columns: 1.02fr 1fr 1.02fr;
-      gap: 7px;
+      grid-template-columns: 1.04fr 0.96fr 1.04fr;
+      gap: 6px;
       align-items: stretch;
     }
 
     .side-box {
       border-radius: 10px;
-      padding: 8px 6px;
+      padding: 7px 6px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
       text-align: center;
-      min-height: 126px;
+      min-height: 122px;
+      position: relative;
     }
 
     .small-box {
-      background: linear-gradient(180deg, rgba(14, 116, 144, 0.45) 0%, rgba(15, 23, 42, 0.92) 100%);
+      background: linear-gradient(180deg, rgba(14, 116, 144, 0.52) 0%, rgba(10, 20, 38, 0.94) 100%);
       border: 1.5px solid #22d3ee;
-      box-shadow: inset 0 0 12px rgba(34, 211, 238, 0.25);
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.25), inset 0 0 10px rgba(34, 211, 238, 0.22);
     }
 
     .big-box {
-      background: linear-gradient(180deg, rgba(157, 23, 77, 0.35) 0%, rgba(15, 23, 42, 0.92) 100%);
-      border: 1.2px solid rgba(244, 114, 182, 0.55);
-      opacity: 0.85;
+      background: linear-gradient(180deg, rgba(157, 23, 77, 0.42) 0%, rgba(20, 11, 28, 0.94) 100%);
+      border: 1.4px solid #ec4899;
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.22), inset 0 0 10px rgba(236, 72, 153, 0.18);
     }
 
-    .side-box.active-choice {
-      opacity: 1;
-      border-width: 1.6px;
+    .corner-ball {
+      position: absolute;
+      top: -6px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+      font-weight: 900;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+    }
+
+    .small-box .corner-ball {
+      left: -6px;
+      background: linear-gradient(135deg, #fb7185, #e11d48);
+      border: 1.5px solid #fecdd3;
+    }
+
+    .big-box .corner-ball {
+      right: -6px;
+      background: linear-gradient(135deg, #4ade80, #16a34a);
+      border: 1.5px solid #bbf7d0;
+    }
+
+    .crown-small {
+      font-size: 9px;
+      line-height: 1;
+      margin-bottom: 1px;
+    }
+
+    .small-box .crown-small {
+      color: #38bdf8;
+    }
+
+    .big-box .crown-small {
+      color: #f472b6;
     }
 
     .choice-title {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 900;
       letter-spacing: 0.5px;
+      line-height: 1.1;
     }
 
     .small-box .choice-title {
@@ -295,28 +369,31 @@
     }
 
     .choice-range {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 800;
       color: #cbd5e1;
-      margin-top: 1px;
+      margin-top: 2px;
     }
 
     .choice-pill {
       margin-top: auto;
-      padding: 3px 8px;
+      padding: 3px 6px;
       border-radius: 999px;
-      font-size: 8px;
+      font-size: 7.5px;
       font-weight: 900;
-      letter-spacing: 0.4px;
-      background: rgba(16, 185, 129, 0.2);
-      border: 1px solid #34d399;
-      color: #6ee7b7;
+      letter-spacing: 0.35px;
       width: 100%;
     }
 
-    .big-box .choice-pill {
-      background: rgba(244, 63, 94, 0.16);
-      border-color: rgba(251, 113, 133, 0.5);
+    .pill-active {
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid #34d399;
+      color: #6ee7b7;
+    }
+
+    .pill-inactive {
+      background: rgba(244, 63, 94, 0.14);
+      border: 1px solid rgba(251, 113, 133, 0.45);
       color: #fda4af;
     }
 
@@ -326,28 +403,33 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      gap: 4px;
+      gap: 3px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 9px;
+      padding: 5px 4px;
     }
 
     .no-label {
-      font-size: 7px;
+      font-size: 6.5px;
       font-weight: 800;
       color: #94a3b8;
       letter-spacing: 0.5px;
     }
 
     .period-code {
-      font-size: 8px;
+      font-size: 7.5px;
       font-weight: 900;
       color: #f8fafc;
-      letter-spacing: 0.2px;
+      letter-spacing: 0.15px;
       word-break: break-all;
       text-align: center;
+      line-height: 1.15;
     }
 
     .glow-ball {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: radial-gradient(circle at 32% 28%, #86efac 0%, #22c55e 48%, #14532d 100%);
       border: 2px solid #bbf7d0;
@@ -356,10 +438,11 @@
         inset 0 -3px 6px rgba(0, 0, 0, 0.45);
       display: grid;
       place-items: center;
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 900;
       color: #ffffff;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
+      margin: 2px 0;
     }
 
     .glow-ball.red-ball {
@@ -371,41 +454,43 @@
     }
 
     .next-in-box {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(9, 15, 28, 0.92);
       border: 1px solid rgba(148, 163, 184, 0.35);
       border-radius: 7px;
-      padding: 3px 7px;
+      padding: 2px 5px;
       text-align: center;
       width: 100%;
     }
 
     .next-in-lbl {
-      font-size: 6.5px;
+      font-size: 6px;
       font-weight: 800;
       color: #94a3b8;
+      line-height: 1.1;
     }
 
     .next-in-sec {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 900;
       color: #facc15;
+      line-height: 1.15;
     }
 
     /* Recent Results Strip */
     .recent-wrap {
-      margin-top: 8px;
-      padding-top: 6px;
-      border-top: 1px solid rgba(148, 163, 184, 0.22);
+      margin-top: 7px;
+      padding-top: 5px;
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
     }
 
     .recent-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 7.5px;
+      font-size: 7px;
       font-weight: 900;
       color: #cbd5e1;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.45px;
       margin-bottom: 5px;
     }
 
@@ -416,27 +501,27 @@
     }
 
     .mini-ball {
-      height: 22px;
+      height: 21px;
       border-radius: 999px;
       display: grid;
       place-items: center;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 900;
       color: #ffffff;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.45);
     }
 
     .b-green {
-      background: linear-gradient(135deg, #22c55e, #15803d);
+      background: linear-gradient(145deg, #4ade80, #15803d);
     }
 
     .b-red {
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      background: linear-gradient(145deg, #f87171, #b91c1c);
     }
 
     .b-violet {
-      background: linear-gradient(135deg, #a855f7, #ec4899);
+      background: linear-gradient(145deg, #c084fc, #db2777);
     }
   </style>
 </head>
@@ -453,21 +538,27 @@
     ></iframe>
   </div>
 
-  <!-- Chip to bring back popup if hidden -->
+  <!-- Reopen Chip when Hidden -->
   <button class="reopen-chip" id="reopenChip" type="button">
     <span>⚡</span>
     <span>JOY VAI PANEL</span>
   </button>
 
-  <!-- Floating Predictor Popup matching screenshot style -->
+  <!-- Floating Predictor Popup -->
   <div class="pred-stage" id="predStage">
     <aside class="pred-card" id="predCard">
       <div class="pred-header" id="dragHandle">
-        <div class="brand-left">
+        <div class="brand-block">
           <span class="play-smarter">PLAY SMARTER</span>
-          <div class="main-title">JOY VAI</div>
+          <div class="crown-ico">♛</div>
+          <div class="wing-title-row">
+            <span class="wing-left">»»</span>
+            <div class="main-title">JOY VAI</div>
+            <span class="wing-right">««</span>
+          </div>
           <span class="sub-pill">30 SEC PREDICTOR V2</span>
         </div>
+
         <div class="header-actions">
           <button type="button" class="mini-ctrl" id="syncPeriodBtn" title="Sync Period">SYNC</button>
           <button type="button" class="hide-btn" id="hideBtn" title="Hide Popup">HIDE</button>
@@ -491,13 +582,15 @@
         <div class="lock-err" id="lockErr"></div>
       </div>
 
-      <!-- Unlocked Predictor Body -->
+      <!-- Unlocked 3-Column Body -->
       <div class="panel-content" id="panelContent">
         <div class="three-col">
-          <div class="side-box small-box active-choice" id="smallCard">
+          <div class="side-box small-box" id="smallCard">
+            <div class="corner-ball" id="smallCornerBall">4</div>
+            <div class="crown-small">♛</div>
             <div class="choice-title">SMALL</div>
             <div class="choice-range">0 - 4</div>
-            <div class="choice-pill" id="smallBadge">✓ PREDICTED</div>
+            <div class="choice-pill pill-active" id="smallBadge">✓ PREDICTED</div>
           </div>
 
           <div class="center-col">
@@ -511,9 +604,11 @@
           </div>
 
           <div class="side-box big-box" id="bigCard">
+            <div class="corner-ball" id="bigCornerBall">9</div>
+            <div class="crown-small">♛</div>
             <div class="choice-title">BIG</div>
             <div class="choice-range">5 - 9</div>
-            <div class="choice-pill" id="bigBadge">NOT PREDICTED</div>
+            <div class="choice-pill pill-inactive" id="bigBadge">NOT PREDICTED</div>
           </div>
         </div>
 
@@ -549,6 +644,8 @@
     const bigCard = document.getElementById("bigCard");
     const smallBadge = document.getElementById("smallBadge");
     const bigBadge = document.getElementById("bigBadge");
+    const smallCornerBall = document.getElementById("smallCornerBall");
+    const bigCornerBall = document.getElementById("bigCornerBall");
     const periodCode = document.getElementById("periodCode");
     const centerBall = document.getElementById("centerBall");
     const nextInSec = document.getElementById("nextInSec");
@@ -600,19 +697,22 @@
       const pool = isSmall ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
       const digit = pool[Math.abs(slot * 17 + 3) % pool.length];
 
+      smallCornerBall.textContent = (Math.abs(slot) % 5);
+      bigCornerBall.textContent = 5 + (Math.abs(slot + 2) % 5);
+
       centerBall.textContent = digit;
       if (isSmall) {
         centerBall.classList.remove("red-ball");
-        smallCard.classList.add("active-choice");
-        bigCard.classList.remove("active-choice");
         smallBadge.textContent = "✓ PREDICTED";
+        smallBadge.className = "choice-pill pill-active";
         bigBadge.textContent = "NOT PREDICTED";
+        bigBadge.className = "choice-pill pill-inactive";
       } else {
         centerBall.classList.add("red-ball");
-        bigCard.classList.add("active-choice");
-        smallCard.classList.remove("active-choice");
         bigBadge.textContent = "✓ PREDICTED";
+        bigBadge.className = "choice-pill pill-active";
         smallBadge.textContent = "NOT PREDICTED";
+        smallBadge.className = "choice-pill pill-inactive";
       }
 
       let html = "";
@@ -677,7 +777,7 @@
     tick();
     setInterval(tick, 250);
 
-    // Drag only via top header handle; clicking body/inputs never moves popup
+    // Drag only via top header handle; clicking body/inputs never jumps popup
     let dragging = false;
     let startX = 0;
     let startY = 0;
