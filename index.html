@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>JOY VAI — HGNICE 3D Live Water Panel</title>
+  <title>JOY VAI — 30 SEC PREDICTOR V2</title>
   <style>
     * {
       box-sizing: border-box;
@@ -17,17 +17,17 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #0f172a;
+      background: #090d16;
     }
 
-    /* Direct Fullscreen Target Site Layer */
+    /* Fullscreen Target Page Frame */
     .site-layer {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       z-index: 1;
-      background: #0f172a;
+      background: #090d16;
     }
 
     .site-iframe {
@@ -37,407 +37,412 @@
       display: block;
     }
 
-    /* Bottom Quick Direct Chips */
-    .floating-chips {
+    /* Floating Predictor Stage */
+    .pred-stage {
       position: fixed;
-      bottom: 16px;
-      left: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      z-index: 45;
-    }
-
-    .chip-btn {
-      background: rgba(255, 255, 255, 0.96);
-      color: #0f172a;
-      border: 1px solid #bae6fd;
-      border-radius: 10px;
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .chip-btn.primary-chip {
-      color: #0369a1;
-    }
-
-    /* 3D Perspective Stage for Floating Water Panel */
-    .water-stage {
-      position: fixed;
-      top: 76px;
-      right: 12px;
-      width: 266px;
-      perspective: 950px;
+      top: 108px;
+      left: 10px;
+      width: 318px;
+      max-width: calc(100vw - 20px);
       z-index: 50;
       user-select: none;
     }
 
-    .water-panel {
+    .pred-card {
       width: 100%;
-      border-radius: 22px;
-      padding: 12px;
+      border-radius: 14px;
+      padding: 10px 10px 9px;
+      background: radial-gradient(circle at 50% 18%, #162845 0%, #0a1222 62%, #060b14 100%);
+      border: 1.5px solid #22d3ee;
+      box-shadow:
+        0 0 18px rgba(34, 211, 238, 0.28),
+        0 18px 36px rgba(0, 0, 0, 0.65);
+      color: #ffffff;
       position: relative;
       overflow: hidden;
-      transform-style: preserve-3d;
-      will-change: transform;
-      background: linear-gradient(165deg, #e8fbff 0%, #bceeff 45%, #7ce2fc 100%);
-      backdrop-filter: blur(14px);
-      border: 1.5px solid rgba(255, 255, 255, 0.92);
-      box-shadow:
-        0 24px 48px rgba(2, 132, 199, 0.3),
-        inset 0 1px 2px rgba(255, 255, 255, 0.95);
-      transition: transform 0.12s ease-out;
     }
 
-    /* Animated Water Waves Inside Popup */
-    .panel-water-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.72;
-    }
-
-    .panel-water-bg svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    /* Specular 3D Highlight */
-    .water-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(
-        circle at var(--sheen-x, 50%) var(--sheen-y, 20%),
-        rgba(255, 255, 255, 0.65) 0%,
-        rgba(255, 255, 255, 0.12) 38%,
-        transparent 70%
-      );
-      z-index: 2;
-    }
-
-    .water-panel > *:not(.panel-water-bg) {
-      position: relative;
-      z-index: 3;
-    }
-
-    .water-panel.minimized .panel-body {
+    .pred-card.hidden-panel {
       display: none;
     }
 
-    .panel-header {
-      display: flex;
+    .reopen-chip {
+      position: fixed;
+      top: 112px;
+      left: 10px;
+      z-index: 51;
+      display: none;
       align-items: center;
-      justify-content: space-between;
-      cursor: grab;
-      padding-bottom: 8px;
-      transform: translateZ(14px);
-      touch-action: none;
-    }
-
-    .panel-header:active { cursor: grabbing; }
-
-    .panel-brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .drop-badge {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #22d3ee, #0284c7);
+      gap: 6px;
+      background: linear-gradient(90deg, #06b6d4, #2563eb);
       color: #ffffff;
-      display: grid;
-      place-items: center;
-      font-size: 13px;
-      box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35);
+      border: 1px solid #67e8f9;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
     }
 
-    .panel-title-group { line-height: 1.1; }
-    .panel-title-group .name { font-size: 12px; font-weight: 900; color: #0f172a; }
-    .panel-title-group .sub { font-size: 9px; font-weight: 800; color: #0369a1; letter-spacing: 0.4px; }
+    .reopen-chip.show {
+      display: inline-flex;
+    }
 
-    .panel-controls { display: flex; align-items: center; gap: 6px; }
+    /* Top Header */
+    .pred-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: grab;
+      touch-action: none;
+      margin-bottom: 8px;
+    }
 
-    .icon-circle-btn {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(255, 255, 255, 0.92);
-      color: #0f172a;
+    .pred-header:active {
+      cursor: grabbing;
+    }
+
+    .brand-left {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .play-smarter {
+      font-size: 7px;
       font-weight: 900;
-      font-size: 12px;
-      display: grid;
-      place-items: center;
+      letter-spacing: 0.8px;
+      color: #facc15;
+      margin-bottom: 2px;
+    }
+
+    .main-title {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      font-style: italic;
+      background: linear-gradient(180deg, #fde047 0%, #f59e0b 55%, #ea580c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
+    }
+
+    .sub-pill {
+      margin-top: 3px;
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid #38bdf8;
+      color: #e0f2fe;
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .mini-ctrl {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #38bdf8;
+      color: #7dd3fc;
+      border-radius: 5px;
+      padding: 3px 6px;
+      font-size: 8px;
+      font-weight: 900;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .hide-btn {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid #22d3ee;
+      color: #67e8f9;
+      border-radius: 5px;
+      padding: 3px 7px;
+      font-size: 8px;
+      font-weight: 900;
+      cursor: pointer;
     }
 
     /* Lock View */
-    .lock-card {
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 16px;
-      padding: 16px 12px;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      transform: translateZ(8px);
-    }
-
-    .lock-card.hidden { display: none; }
-
-    .lock-icon-ring {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      margin: 0 auto 10px;
-      background: linear-gradient(145deg, #7dd3fc, #0284c7);
-      color: #ffffff;
-      display: grid;
-      place-items: center;
-      font-size: 18px;
-      box-shadow: 0 6px 14px rgba(2, 132, 199, 0.28);
-    }
-
-    .lock-title { font-size: 13px; font-weight: 900; color: #0f172a; letter-spacing: 0.4px; }
-    .lock-sub { font-size: 10px; color: #475569; margin-top: 2px; margin-bottom: 12px; }
-
-    .pass-input-wrap { position: relative; margin-bottom: 10px; }
-
-    .pass-input {
-      width: 100%;
-      padding: 9px 32px 9px 11px;
+    .lock-box {
+      background: rgba(10, 18, 34, 0.92);
+      border: 1px solid rgba(56, 189, 248, 0.45);
       border-radius: 10px;
-      border: 1.5px solid #67e8f9;
-      background: #ffffff;
-      font-size: 12px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+
+    .lock-box.hidden {
+      display: none;
+    }
+
+    .lock-heading {
+      font-size: 11px;
+      font-weight: 900;
+      color: #38bdf8;
+      margin-bottom: 4px;
+    }
+
+    .lock-desc {
+      font-size: 9px;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .pass-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 7px;
+    }
+
+    .pass-field {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #22d3ee;
+      border-radius: 7px;
+      padding: 7px 9px;
+      color: #ffffff;
+      font-size: 11px;
       font-weight: 700;
-      color: #0f172a;
       outline: none;
     }
 
-    .pass-input:focus { border-color: #0284c7; }
-
-    .eye-toggle {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: #64748b;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .unlock-btn {
+    .unlock-action {
       width: 100%;
-      padding: 9px 12px;
-      border-radius: 10px;
+      padding: 7px 10px;
       border: none;
-      background: linear-gradient(90deg, #06b6d4, #0d9488);
+      border-radius: 7px;
+      background: linear-gradient(90deg, #06b6d4, #2563eb);
       color: #ffffff;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(13, 148, 136, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .error-msg {
-      color: #dc2626;
       font-size: 10px;
-      font-weight: 700;
-      margin-top: 7px;
-      min-height: 14px;
-    }
-
-    /* Unlocked View */
-    .unlocked-view {
-      display: none;
-      transform: translateZ(10px);
-    }
-
-    .unlocked-view.active { display: block; }
-
-    .meta-strip {
-      background: rgba(255, 255, 255, 0.88);
-      border-radius: 12px;
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .period-box .lbl { font-size: 8px; font-weight: 800; color: #64748b; }
-    .period-box .val { font-size: 11px; font-weight: 900; color: #0f172a; }
-
-    .timer-pill {
-      background: linear-gradient(90deg, #fb7185, #ef4444);
-      color: #ffffff;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 11px;
       font-weight: 900;
-    }
-
-    .api-tag {
-      background: #e0f2fe;
-      color: #0369a1;
-      font-size: 9px;
-      font-weight: 900;
-      padding: 4px 6px;
-      border-radius: 8px;
       cursor: pointer;
+      letter-spacing: 0.5px;
     }
 
-    .signal-box {
-      background: linear-gradient(135deg, rgba(45, 212, 191, 0.92), rgba(2, 132, 199, 0.94));
-      border-radius: 14px;
-      padding: 11px;
-      color: #ffffff;
-      margin-bottom: 8px;
-      box-shadow: 0 6px 14px rgba(2, 132, 199, 0.25);
-    }
-
-    .signal-top {
-      display: flex;
-      justify-content: space-between;
+    .lock-err {
+      margin-top: 6px;
+      min-height: 12px;
       font-size: 9px;
       font-weight: 800;
+      color: #f87171;
     }
 
-    .signal-main {
-      font-size: 22px;
-      font-weight: 900;
-      text-align: center;
-      letter-spacing: 1px;
-      margin: 5px 0;
+    /* Unlocked 3-Column Grid matching screenshot */
+    .panel-content {
+      display: none;
     }
 
-    .prob-bar-wrap {
-      background: rgba(255, 255, 255, 0.32);
-      height: 6px;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 4px;
+    .panel-content.active {
+      display: block;
     }
 
-    .prob-bar-fill {
-      height: 100%;
-      background: #ffffff;
-      border-radius: 999px;
-      transition: width 0.4s ease;
-    }
-
-    .prob-pct {
-      text-align: right;
-      font-size: 9px;
-      font-weight: 900;
-      margin-top: 3px;
-    }
-
-    .numbers-grid {
+    .three-col {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.88);
-      border-radius: 14px;
-      padding: 8px;
-      text-align: center;
+      grid-template-columns: 1.02fr 1fr 1.02fr;
+      gap: 7px;
+      align-items: stretch;
     }
 
-    .num-head {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 8px;
-      font-weight: 900;
-      color: #0369a1;
-      margin-bottom: 2px;
-      gap: 4px;
-    }
-
-    .trend-badge {
-      background: #e0f2fe;
-      color: #0369a1;
-      border: 1px solid #7dd3fc;
-      padding: 2px 5px;
-      border-radius: 6px;
-      font-size: 7.5px;
-      font-weight: 900;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .wave-num-card {
+    .side-box {
+      border-radius: 10px;
+      padding: 8px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      text-align: center;
+      min-height: 126px;
     }
 
-    .wave-svg {
-      width: 66px;
-      height: 66px;
-      filter: drop-shadow(0 5px 10px rgba(2, 132, 199, 0.25));
+    .small-box {
+      background: linear-gradient(180deg, rgba(14, 116, 144, 0.45) 0%, rgba(15, 23, 42, 0.92) 100%);
+      border: 1.5px solid #22d3ee;
+      box-shadow: inset 0 0 12px rgba(34, 211, 238, 0.25);
     }
 
-    .sub-lbl {
+    .big-box {
+      background: linear-gradient(180deg, rgba(157, 23, 77, 0.35) 0%, rgba(15, 23, 42, 0.92) 100%);
+      border: 1.2px solid rgba(244, 114, 182, 0.55);
+      opacity: 0.85;
+    }
+
+    .side-box.active-choice {
+      opacity: 1;
+      border-width: 1.6px;
+    }
+
+    .choice-title {
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    .small-box .choice-title {
+      color: #38bdf8;
+    }
+
+    .big-box .choice-title {
+      color: #f472b6;
+    }
+
+    .choice-range {
+      font-size: 10px;
+      font-weight: 800;
+      color: #cbd5e1;
+      margin-top: 1px;
+    }
+
+    .choice-pill {
+      margin-top: auto;
+      padding: 3px 8px;
+      border-radius: 999px;
       font-size: 8px;
       font-weight: 900;
-      color: #0369a1;
-      margin-top: -2px;
+      letter-spacing: 0.4px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #34d399;
+      color: #6ee7b7;
+      width: 100%;
     }
 
-    .sync-row {
+    .big-box .choice-pill {
+      background: rgba(244, 63, 94, 0.16);
+      border-color: rgba(251, 113, 133, 0.5);
+      color: #fda4af;
+    }
+
+    /* Center Column */
+    .center-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .no-label {
+      font-size: 7px;
+      font-weight: 800;
+      color: #94a3b8;
+      letter-spacing: 0.5px;
+    }
+
+    .period-code {
+      font-size: 8px;
+      font-weight: 900;
+      color: #f8fafc;
+      letter-spacing: 0.2px;
+      word-break: break-all;
+      text-align: center;
+    }
+
+    .glow-ball {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 28%, #86efac 0%, #22c55e 48%, #14532d 100%);
+      border: 2px solid #bbf7d0;
+      box-shadow:
+        0 0 14px rgba(34, 197, 94, 0.75),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.45);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.65);
+    }
+
+    .glow-ball.red-ball {
+      background: radial-gradient(circle at 32% 28%, #fca5a5 0%, #ef4444 48%, #7f1d1d 100%);
+      border-color: #fecaca;
+      box-shadow:
+        0 0 14px rgba(239, 68, 68, 0.75),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.45);
+    }
+
+    .next-in-box {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 7px;
+      padding: 3px 7px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .next-in-lbl {
+      font-size: 6.5px;
+      font-weight: 800;
+      color: #94a3b8;
+    }
+
+    .next-in-sec {
+      font-size: 10px;
+      font-weight: 900;
+      color: #facc15;
+    }
+
+    /* Recent Results Strip */
+    .recent-wrap {
       margin-top: 8px;
-      background: rgba(255, 255, 255, 0.88);
-      border-radius: 10px;
-      padding: 6px 8px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(148, 163, 184, 0.22);
+    }
+
+    .recent-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
-      font-size: 9px;
-      font-weight: 800;
-      color: #0f172a;
+      font-size: 7.5px;
+      font-weight: 900;
+      color: #cbd5e1;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
     }
 
-    .sync-btn {
-      background: #0284c7;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 3px 7px;
-      font-size: 9px;
-      font-weight: 800;
-      cursor: pointer;
+    .recent-balls {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 4px;
+    }
+
+    .mini-ball {
+      height: 22px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .b-green {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+    }
+
+    .b-red {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+    }
+
+    .b-violet {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
     }
   </style>
 </head>
 <body>
 
-  <!-- Direct Target Page Frame (No Middle Blocking Screen) -->
+  <!-- Target Page Frame -->
   <div class="site-layer">
     <iframe
       id="targetFrame"
@@ -448,527 +453,280 @@
     ></iframe>
   </div>
 
-  <!-- Quick Direct Chips -->
-  <div class="floating-chips">
-    <a class="chip-btn primary-chip" href="https://hgnice.bet/#/register?invitationCode=376851951983" target="_top">
-      <span>💧</span>
-      <span>JOY VAI</span>
-    </a>
-    <a class="chip-btn" href="https://hgnice.bet/#/register?invitationCode=376851951983" target="_top">
-      <span>↗</span>
-      <span>Register</span>
-    </a>
-  </div>
+  <!-- Chip to bring back popup if hidden -->
+  <button class="reopen-chip" id="reopenChip" type="button">
+    <span>⚡</span>
+    <span>JOY VAI PANEL</span>
+  </button>
 
-  <!-- 3D Floating Water-Glass Panel -->
-  <div class="water-stage" id="waterStage">
-    <aside class="water-panel" id="waterPanel">
-      <!-- Live Water Waves Inside Popup -->
-      <div class="panel-water-bg">
-        <svg viewBox="0 0 300 420" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="popupWaterGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.42" />
-              <stop offset="100%" stop-color="#0284c7" stop-opacity="0.65" />
-            </linearGradient>
-            <linearGradient id="popupWaterGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#7dd3fc" stop-opacity="0.35" />
-              <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.55" />
-            </linearGradient>
-          </defs>
-          <path id="panelWaveBack" fill="url(#popupWaterGrad2)" />
-          <path id="panelWaveFront" fill="url(#popupWaterGrad1)" />
-        </svg>
-      </div>
-
-      <div class="panel-header" id="panelDragHandle">
-        <div class="panel-brand">
-          <div class="drop-badge">💧</div>
-          <div class="panel-title-group">
-            <div class="name">JOY VAI</div>
-            <div class="sub">WINGO 30S • @BDT588</div>
-          </div>
+  <!-- Floating Predictor Popup matching screenshot style -->
+  <div class="pred-stage" id="predStage">
+    <aside class="pred-card" id="predCard">
+      <div class="pred-header" id="dragHandle">
+        <div class="brand-left">
+          <span class="play-smarter">PLAY SMARTER</span>
+          <div class="main-title">JOY VAI</div>
+          <span class="sub-pill">30 SEC PREDICTOR V2</span>
         </div>
-        <div class="panel-controls">
-          <button class="icon-circle-btn" id="lockToggleBtn" title="Lock / Unlock">🔒</button>
-          <button class="icon-circle-btn" id="minToggleBtn" title="Minimize">−</button>
+        <div class="header-actions">
+          <button type="button" class="mini-ctrl" id="syncPeriodBtn" title="Sync Period">SYNC</button>
+          <button type="button" class="hide-btn" id="hideBtn" title="Hide Popup">HIDE</button>
         </div>
       </div>
 
-      <div class="panel-body">
-        <!-- Lock View -->
-        <div class="lock-card" id="lockCard">
-          <div class="lock-icon-ring">🔒</div>
-          <div class="lock-title">WATERFALL LOCK</div>
-          <div class="lock-sub">Enter access key to unlock panel</div>
+      <!-- Lock Screen -->
+      <div class="lock-box" id="lockBox">
+        <div class="lock-heading">PANEL LOCKED</div>
+        <div class="lock-desc">Enter access password to view live prediction</div>
+        <div class="pass-row">
+          <input
+            type="password"
+            class="pass-field"
+            id="passInput"
+            placeholder="Password..."
+            autocomplete="off"
+          />
+        </div>
+        <button type="button" class="unlock-action" id="unlockBtn">UNLOCK</button>
+        <div class="lock-err" id="lockErr"></div>
+      </div>
 
-          <div class="pass-input-wrap">
-            <input
-              type="password"
-              class="pass-input"
-              id="passwordInput"
-              placeholder="Password..."
-              autocomplete="off"
-            />
-            <button type="button" class="eye-toggle" id="eyeBtn" title="Show/Hide">👁️</button>
+      <!-- Unlocked Predictor Body -->
+      <div class="panel-content" id="panelContent">
+        <div class="three-col">
+          <div class="side-box small-box active-choice" id="smallCard">
+            <div class="choice-title">SMALL</div>
+            <div class="choice-range">0 - 4</div>
+            <div class="choice-pill" id="smallBadge">✓ PREDICTED</div>
           </div>
 
-          <button type="button" class="unlock-btn" id="unlockBtn">
-            <span>🔓</span>
-            <span>UNLOCK PANEL</span>
-          </button>
+          <div class="center-col">
+            <div class="no-label">NO.</div>
+            <div class="period-code" id="periodCode">20261120100052214</div>
+            <div class="glow-ball" id="centerBall">1</div>
+            <div class="next-in-box">
+              <div class="next-in-lbl">NEXT IN</div>
+              <div class="next-in-sec" id="nextInSec">18s</div>
+            </div>
+          </div>
 
-          <div class="error-msg" id="errorMsg"></div>
+          <div class="side-box big-box" id="bigCard">
+            <div class="choice-title">BIG</div>
+            <div class="choice-range">5 - 9</div>
+            <div class="choice-pill" id="bigBadge">NOT PREDICTED</div>
+          </div>
         </div>
 
-        <!-- Unlocked Signal View -->
-        <div class="unlocked-view" id="unlockedView">
-          <div class="meta-strip">
-            <div class="period-box">
-              <div class="lbl">LIVE PERIOD</div>
-              <div class="val" id="periodVal">#00001</div>
-            </div>
-            <div class="timer-pill" id="timerVal">00:30</div>
-            <div class="api-tag" id="refreshBtn" title="Refresh Signal">↻ API</div>
+        <div class="recent-wrap">
+          <div class="recent-head">
+            <span>📈 RECENT RESULTS</span>
+            <span id="modeTag">WAVE ZIGZAG</span>
           </div>
-
-          <div class="signal-box">
-            <div class="signal-top">
-              <span>💧 SIZE</span>
-              <span id="rangeLabel">0 - 4</span>
-            </div>
-            <div class="signal-main" id="sizeVal">SMALL</div>
-            <div class="prob-bar-wrap">
-              <div class="prob-bar-fill" id="probBar" style="width: 78%;"></div>
-            </div>
-            <div class="prob-pct" id="probText">78%</div>
-          </div>
-
-          <!-- Probable 2 Numbers with Half-Filled Moving Water Inside Digits -->
-          <div class="numbers-grid">
-            <div class="num-head">
-              <span>PROBABLE 2 NUMBERS</span>
-              <span class="trend-badge" id="trendBadge" title="Tap to switch or auto-sync market trend">WAVE ZIGZAG</span>
-            </div>
-
-            <div class="wave-num-card">
-              <svg class="wave-svg" viewBox="0 0 100 100">
-                <defs>
-                  <linearGradient id="halfWater1" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#38bdf8" />
-                    <stop offset="60%" stop-color="#0284c7" />
-                    <stop offset="100%" stop-color="#0369a1" />
-                  </linearGradient>
-                  <linearGradient id="halfWaterBack1" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#7dd3fc" />
-                    <stop offset="100%" stop-color="#0ea5e9" />
-                  </linearGradient>
-                  <clipPath id="digitClip1">
-                    <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" id="svgDigit1">2</text>
-                  </clipPath>
-                </defs>
-
-                <circle cx="50" cy="50" r="45" fill="#f8fdff" stroke="#7dd3fc" stroke-width="3" />
-                <g clip-path="url(#digitClip1)">
-                  <rect x="0" y="0" width="100" height="100" fill="#e0f7ff" />
-                  <path id="backWave1" fill="url(#halfWaterBack1)" opacity="0.72" />
-                  <path id="frontWave1" fill="url(#halfWater1)" />
-                  <circle id="bubble1A" cx="34" cy="72" r="2.8" fill="#ffffff" opacity="0.75" />
-                  <circle id="bubble1B" cx="64" cy="78" r="2.1" fill="#ffffff" opacity="0.65" />
-                </g>
-                <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" fill="none" stroke="#0284c7" stroke-width="2" id="svgDigitOutline1">2</text>
-              </svg>
-              <span class="sub-lbl">P1</span>
-            </div>
-
-            <div class="wave-num-card">
-              <svg class="wave-svg" viewBox="0 0 100 100">
-                <defs>
-                  <linearGradient id="halfWater2" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#38bdf8" />
-                    <stop offset="60%" stop-color="#0284c7" />
-                    <stop offset="100%" stop-color="#0369a1" />
-                  </linearGradient>
-                  <linearGradient id="halfWaterBack2" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#7dd3fc" />
-                    <stop offset="100%" stop-color="#0ea5e9" />
-                  </linearGradient>
-                  <clipPath id="digitClip2">
-                    <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" id="svgDigit2">4</text>
-                  </clipPath>
-                </defs>
-
-                <circle cx="50" cy="50" r="45" fill="#f8fdff" stroke="#7dd3fc" stroke-width="3" />
-                <g clip-path="url(#digitClip2)">
-                  <rect x="0" y="0" width="100" height="100" fill="#e0f7ff" />
-                  <path id="backWave2" fill="url(#halfWaterBack2)" opacity="0.72" />
-                  <path id="frontWave2" fill="url(#halfWater2)" />
-                  <circle id="bubble2A" cx="40" cy="74" r="2.8" fill="#ffffff" opacity="0.75" />
-                  <circle id="bubble2B" cx="62" cy="70" r="2.1" fill="#ffffff" opacity="0.65" />
-                </g>
-                <text x="50" y="76" text-anchor="middle" font-size="74" font-weight="900" font-family="Arial Black, sans-serif" fill="none" stroke="#0284c7" stroke-width="2" id="svgDigitOutline2">4</text>
-              </svg>
-              <span class="sub-lbl">P2</span>
-            </div>
-          </div>
-
-          <div class="sync-row">
-            <span>ID: @BDT588</span>
-            <button class="sync-btn" id="setPeriodBtn" title="Match Exact Market Period">Set Period</button>
-          </div>
+          <div class="recent-balls" id="recentBalls"></div>
         </div>
       </div>
     </aside>
   </div>
 
   <script>
-    const REGISTER_URL = "https://hgnice.bet/#/register?invitationCode=376851951983";
-    const VALID_KEYS = ["ZAHIRUL22369", "JOY-WATER", "KAMRUL-WATER", "JOYVAI", "BDT588"];
-    const MARKET_MODES = ["WAVE ZIGZAG", "DRAGON STREAK", "DOUBLE WAVE", "ALT 1-1", "CHOPPY FLOW"];
+    const PASS_KEY = "ZAHIRUL22369";
+    const MODES = ["WAVE ZIGZAG", "DRAGON STREAK", "DOUBLE WAVE", "ALT 1-1"];
 
-    const stage = document.getElementById("waterStage");
-    const panel = document.getElementById("waterPanel");
-    const dragHandle = document.getElementById("panelDragHandle");
-    const lockCard = document.getElementById("lockCard");
-    const unlockedView = document.getElementById("unlockedView");
-    const passInput = document.getElementById("passwordInput");
-    const eyeBtn = document.getElementById("eyeBtn");
+    const stage = document.getElementById("predStage");
+    const card = document.getElementById("predCard");
+    const dragHandle = document.getElementById("dragHandle");
+    const hideBtn = document.getElementById("hideBtn");
+    const reopenChip = document.getElementById("reopenChip");
+    const syncPeriodBtn = document.getElementById("syncPeriodBtn");
+
+    const lockBox = document.getElementById("lockBox");
+    const panelContent = document.getElementById("panelContent");
+    const passInput = document.getElementById("passInput");
     const unlockBtn = document.getElementById("unlockBtn");
-    const errorMsg = document.getElementById("errorMsg");
-    const lockToggleBtn = document.getElementById("lockToggleBtn");
-    const minToggleBtn = document.getElementById("minToggleBtn");
-    const refreshBtn = document.getElementById("refreshBtn");
-    const setPeriodBtn = document.getElementById("setPeriodBtn");
-    const trendBadge = document.getElementById("trendBadge");
+    const lockErr = document.getElementById("lockErr");
 
-    const periodVal = document.getElementById("periodVal");
-    const timerVal = document.getElementById("timerVal");
-    const sizeVal = document.getElementById("sizeVal");
-    const rangeLabel = document.getElementById("rangeLabel");
-    const probBar = document.getElementById("probBar");
-    const probText = document.getElementById("probText");
+    const smallCard = document.getElementById("smallCard");
+    const bigCard = document.getElementById("bigCard");
+    const smallBadge = document.getElementById("smallBadge");
+    const bigBadge = document.getElementById("bigBadge");
+    const periodCode = document.getElementById("periodCode");
+    const centerBall = document.getElementById("centerBall");
+    const nextInSec = document.getElementById("nextInSec");
+    const recentBalls = document.getElementById("recentBalls");
+    const modeTag = document.getElementById("modeTag");
 
-    const svgDigit1 = document.getElementById("svgDigit1");
-    const svgDigitOutline1 = document.getElementById("svgDigitOutline1");
-    const svgDigit2 = document.getElementById("svgDigit2");
-    const svgDigitOutline2 = document.getElementById("svgDigitOutline2");
+    let unlocked = false;
+    let periodOffset = Number(localStorage.getItem("JOYVAI_PERIOD_OFFSET") || 0);
 
-    const frontWave1 = document.getElementById("frontWave1");
-    const backWave1 = document.getElementById("backWave1");
-    const frontWave2 = document.getElementById("frontWave2");
-    const backWave2 = document.getElementById("backWave2");
-
-    const panelWaveFront = document.getElementById("panelWaveFront");
-    const panelWaveBack = document.getElementById("panelWaveBack");
-
-    const bubble1A = document.getElementById("bubble1A");
-    const bubble1B = document.getElementById("bubble1B");
-    const bubble2A = document.getElementById("bubble2A");
-    const bubble2B = document.getElementById("bubble2B");
-
-    let isUnlocked = false;
-    let tiltX = 0;
-    let tiltY = 0;
-    let waveSurge = 1;
-    let manualModeIndex = null;
-
-    const STORAGE_OFFSET_KEY = "JOYVAI_WINGO30_OFFSET";
-    let periodOffset = Number(localStorage.getItem(STORAGE_OFFSET_KEY) || 0);
-
-    function getCurrentMarketPeriod() {
-      const slot30s = Math.floor(Date.now() / 30000);
-      return slot30s + periodOffset;
+    function buildPeriodString(slotNum) {
+      const basePrefix = "202611201000";
+      const suffix = String(50000 + (Math.abs(slotNum) % 49999)).padStart(5, "0");
+      return basePrefix + suffix;
     }
 
-    function getSecondsRemaining() {
-      const nowSec = Math.floor(Date.now() / 1000);
-      return 30 - (nowSec % 30);
+    function getCurrentSlot() {
+      return Math.floor(Date.now() / 30000) + periodOffset;
     }
 
-    function getMarketModeForPeriod(p) {
-      if (manualModeIndex !== null) return MARKET_MODES[manualModeIndex];
-      const blockIndex = Math.floor(Math.abs(p) / 4);
-      return MARKET_MODES[blockIndex % MARKET_MODES.length];
+    function getRemainingSec() {
+      const sec = Math.floor(Date.now() / 1000);
+      return 30 - (sec % 30);
     }
 
-    trendBadge.addEventListener("click", () => {
-      if (manualModeIndex === null) manualModeIndex = 0;
-      else if (manualModeIndex < MARKET_MODES.length - 1) manualModeIndex += 1;
-      else manualModeIndex = null;
-      if (isUnlocked) generateSignal();
-    });
-
-    let lastSyncedPeriod = getCurrentMarketPeriod();
-
-    function syncPeriodDisplay() {
-      const p = getCurrentMarketPeriod();
-      periodVal.textContent = "#" + p;
-      return p;
+    function colorClassForDigit(n) {
+      if (n === 0 || n === 5) return "b-violet";
+      if (n % 2 === 0) return "b-red";
+      return "b-green";
     }
 
-    setPeriodBtn.addEventListener("click", () => {
-      const currentShown = getCurrentMarketPeriod();
-      const input = prompt("Enter exact current market period number:", String(currentShown));
-      if (!input) return;
-      const targetNum = Number(input.replace(/\D/g, ""));
-      if (!Number.isFinite(targetNum) || targetNum <= 0) return;
+    function renderPrediction() {
+      const slot = getCurrentSlot();
+      periodCode.textContent = buildPeriodString(slot);
 
-      const baseSlot = Math.floor(Date.now() / 30000);
-      periodOffset = targetNum - baseSlot;
-      localStorage.setItem(STORAGE_OFFSET_KEY, String(periodOffset));
-      manualModeIndex = null;
-      lastSyncedPeriod = syncPeriodDisplay();
-      if (isUnlocked) generateSignal();
-    });
+      const mode = MODES[Math.floor(Math.abs(slot) / 4) % MODES.length];
+      modeTag.textContent = mode;
 
-    function buildHalfDigitWavePath(phase, amp, baseY) {
-      let d = `M -4 105 L -4 ${baseY}`;
-      for (let x = -4; x <= 106; x += 5) {
-        const y = baseY + Math.sin(x * 0.095 + phase) * amp + Math.cos(x * 0.05 - phase * 0.8) * (amp * 0.35);
-        d += ` L ${x} ${y.toFixed(2)}`;
-      }
-      d += " L 106 105 Z";
-      return d;
-    }
-
-    function buildPanelWavePath(phase, amp, baseY) {
-      let d = `M -10 430 L -10 ${baseY}`;
-      for (let x = -10; x <= 310; x += 12) {
-        const y = baseY + Math.sin(x * 0.032 + phase) * amp + Math.cos(x * 0.018 - phase * 0.6) * (amp * 0.45);
-        d += ` L ${x} ${y.toFixed(2)}`;
-      }
-      d += " L 310 430 Z";
-      return d;
-    }
-
-    let t = 0;
-    function animateWaves() {
-      t += 0.11 * waveSurge;
-      waveSurge = Math.max(1, waveSurge * 0.96);
-
-      const halfLevel1 = 52 + Math.sin(t * 0.75) * 2.5;
-      const halfLevel2 = 53 + Math.cos(t * 0.7) * 2.5;
-
-      frontWave1.setAttribute("d", buildHalfDigitWavePath(t, 4.2 * waveSurge, halfLevel1));
-      backWave1.setAttribute("d", buildHalfDigitWavePath(-t * 0.85 + 1.3, 3.4 * waveSurge, halfLevel1 - 2.5));
-
-      frontWave2.setAttribute("d", buildHalfDigitWavePath(t * 1.05 + 2.0, 4.2 * waveSurge, halfLevel2));
-      backWave2.setAttribute("d", buildHalfDigitWavePath(-t * 0.9 + 0.6, 3.4 * waveSurge, halfLevel2 - 2.5));
-
-      const pLevel = 265 + Math.sin(t * 0.55) * 10;
-      panelWaveFront.setAttribute("d", buildPanelWavePath(t * 0.8, 11 * waveSurge, pLevel));
-      panelWaveBack.setAttribute("d", buildPanelWavePath(-t * 0.65 + 1.1, 9 * waveSurge, pLevel - 14));
-
-      bubble1A.setAttribute("cy", (88 - ((t * 12) % 30)).toFixed(1));
-      bubble1B.setAttribute("cy", (88 - ((t * 14 + 10) % 30)).toFixed(1));
-      bubble2A.setAttribute("cy", (88 - ((t * 11 + 16) % 30)).toFixed(1));
-      bubble2B.setAttribute("cy", (88 - ((t * 13 + 22) % 30)).toFixed(1));
-
-      requestAnimationFrame(animateWaves);
-    }
-    requestAnimationFrame(animateWaves);
-
-    function apply3DTransform(extraScale = 1) {
-      panel.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${extraScale})`;
-    }
-
-    function updateTiltFromPoint(clientX, clientY) {
-      const rect = panel.getBoundingClientRect();
-      const nx = ((clientX - rect.left) / rect.width) * 2 - 1;
-      const ny = ((clientY - rect.top) / rect.height) * 2 - 1;
-      tiltY = Math.max(-14, Math.min(14, nx * 12));
-      tiltX = Math.max(-14, Math.min(14, -ny * 12));
-      panel.style.setProperty("--sheen-x", `${Math.max(0, Math.min(100, (nx + 1) * 50))}%`);
-      panel.style.setProperty("--sheen-y", `${Math.max(0, Math.min(100, (ny + 1) * 50))}%`);
-      apply3DTransform(1.015);
-    }
-
-    function resetTilt() {
-      tiltX = 0;
-      tiltY = 0;
-      panel.style.setProperty("--sheen-x", "50%");
-      panel.style.setProperty("--sheen-y", "20%");
-      apply3DTransform(1);
-    }
-
-    panel.addEventListener("mousemove", (e) => {
-      if (!isDragging) updateTiltFromPoint(e.clientX, e.clientY);
-    });
-    panel.addEventListener("mouseleave", () => {
-      if (!isDragging) resetTilt();
-    });
-
-    eyeBtn.addEventListener("click", () => {
-      passInput.type = passInput.type === "password" ? "text" : "password";
-    });
-
-    function setDigits(d1, d2) {
-      svgDigit1.textContent = d1;
-      svgDigitOutline1.textContent = d1;
-      svgDigit2.textContent = d2;
-      svgDigitOutline2.textContent = d2;
-      waveSurge = 2.0;
-    }
-
-    function generateSignal() {
-      const p = syncPeriodDisplay();
-      const mode = getMarketModeForPeriod(p);
-      trendBadge.textContent = mode;
-
-      const seed = Math.abs(p * 37 + 19);
       let isSmall;
-
       if (mode === "DRAGON STREAK") {
-        isSmall = (Math.floor(Math.abs(p) / 3) % 2) === 0;
+        isSmall = (Math.floor(Math.abs(slot) / 3) % 2) === 0;
       } else if (mode === "ALT 1-1") {
-        isSmall = (Math.abs(p) % 2) === 0;
+        isSmall = (Math.abs(slot) % 2) === 0;
       } else if (mode === "DOUBLE WAVE") {
-        isSmall = (Math.floor(Math.abs(p) / 2) % 2) === 0;
+        isSmall = (Math.floor(Math.abs(slot) / 2) % 2) === 0;
       } else {
-        isSmall = (seed % 10) < 5;
+        isSmall = ((Math.abs(slot * 13 + 7)) % 10) < 5;
       }
-
-      const pct = 74 + (seed % 17);
-      sizeVal.textContent = isSmall ? "SMALL" : "BIG";
-      rangeLabel.textContent = isSmall ? "0 - 4" : "5 - 9";
-      probBar.style.width = pct + "%";
-      probText.textContent = pct + "%";
 
       const pool = isSmall ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-      const firstIdx = seed % pool.length;
-      const secondIdx = (firstIdx + 2) % pool.length;
-      setDigits(pool[firstIdx], pool[secondIdx]);
+      const digit = pool[Math.abs(slot * 17 + 3) % pool.length];
+
+      centerBall.textContent = digit;
+      if (isSmall) {
+        centerBall.classList.remove("red-ball");
+        smallCard.classList.add("active-choice");
+        bigCard.classList.remove("active-choice");
+        smallBadge.textContent = "✓ PREDICTED";
+        bigBadge.textContent = "NOT PREDICTED";
+      } else {
+        centerBall.classList.add("red-ball");
+        bigCard.classList.add("active-choice");
+        smallCard.classList.remove("active-choice");
+        bigBadge.textContent = "✓ PREDICTED";
+        smallBadge.textContent = "NOT PREDICTED";
+      }
+
+      let html = "";
+      for (let i = 9; i >= 1; i--) {
+        const histNum = Math.abs((slot - i) * 19 + 5) % 10;
+        html += `<div class="mini-ball ${colorClassForDigit(histNum)}">${histNum}</div>`;
+      }
+      recentBalls.innerHTML = html;
     }
 
-    function unlockPanel() {
-      const entered = passInput.value.trim().toUpperCase();
-      if (VALID_KEYS.includes(entered)) {
-        isUnlocked = true;
-        errorMsg.textContent = "";
-        lockCard.classList.add("hidden");
-        unlockedView.classList.add("active");
-        generateSignal();
+    function tryUnlock() {
+      const val = passInput.value.trim().toUpperCase();
+      if (val === PASS_KEY) {
+        unlocked = true;
+        lockErr.textContent = "";
+        lockBox.classList.add("hidden");
+        panelContent.classList.add("active");
+        renderPrediction();
       } else {
-        errorMsg.textContent = "Invalid password! Try Zahirul22369";
+        lockErr.textContent = "Invalid password! Use Zahirul22369";
       }
     }
 
-    unlockBtn.addEventListener("click", unlockPanel);
+    unlockBtn.addEventListener("click", tryUnlock);
     passInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") unlockPanel();
+      if (e.key === "Enter") tryUnlock();
     });
 
-    lockToggleBtn.addEventListener("click", () => {
-      if (!isUnlocked) {
-        passInput.focus();
-        return;
-      }
-      isUnlocked = false;
-      passInput.value = "";
-      unlockedView.classList.remove("active");
-      lockCard.classList.remove("hidden");
+    hideBtn.addEventListener("click", () => {
+      card.classList.add("hidden-panel");
+      reopenChip.classList.add("show");
     });
 
-    minToggleBtn.addEventListener("click", () => {
-      panel.classList.toggle("minimized");
-      minToggleBtn.textContent = panel.classList.contains("minimized") ? "+" : "−";
+    reopenChip.addEventListener("click", () => {
+      card.classList.remove("hidden-panel");
+      reopenChip.classList.remove("show");
     });
 
-    refreshBtn.addEventListener("click", generateSignal);
+    syncPeriodBtn.addEventListener("click", () => {
+      const currentNum = buildPeriodString(getCurrentSlot());
+      const entered = prompt("Enter current period number:", currentNum);
+      if (!entered) return;
+      const digitsOnly = entered.replace(/\D/g, "");
+      if (!digitsOnly) return;
+      const numVal = Number(digitsOnly.slice(-5));
+      if (!Number.isFinite(numVal)) return;
+      periodOffset = numVal - (Math.floor(Date.now() / 30000) % 49999);
+      localStorage.setItem("JOYVAI_PERIOD_OFFSET", String(periodOffset));
+      if (unlocked) renderPrediction();
+    });
 
-    function tickClock() {
-      const rem = getSecondsRemaining();
-      timerVal.textContent = rem < 10 ? "00:0" + rem : "00:" + rem;
-
-      const currentP = getCurrentMarketPeriod();
-      if (currentP !== lastSyncedPeriod) {
-        lastSyncedPeriod = currentP;
-        syncPeriodDisplay();
-        if (isUnlocked) generateSignal();
-      } else {
-        syncPeriodDisplay();
+    let lastSlot = getCurrentSlot();
+    function tick() {
+      const rem = getRemainingSec();
+      nextInSec.textContent = rem + "s";
+      const curSlot = getCurrentSlot();
+      if (curSlot !== lastSlot) {
+        lastSlot = curSlot;
+        if (unlocked) renderPrediction();
       }
     }
-    tickClock();
-    setInterval(tickClock, 250);
+    tick();
+    setInterval(tick, 250);
 
-    let isDragging = false;
-    let dragStartX = 0;
-    let dragStartY = 0;
-    let stageStartLeft = 0;
-    let stageStartTop = 0;
-    let prevMoveX = 0;
-    let prevMoveY = 0;
+    // Drag only via top header handle; clicking body/inputs never moves popup
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let origLeft = 0;
+    let origTop = 0;
 
-    function beginDrag(clientX, clientY) {
+    function onDragStart(clientX, clientY) {
       const rect = stage.getBoundingClientRect();
-      stage.style.left = rect.left + "px";
-      stage.style.top = rect.top + "px";
-      stage.style.right = "auto";
-
-      isDragging = true;
-      dragStartX = clientX;
-      dragStartY = clientY;
-      stageStartLeft = rect.left;
-      stageStartTop = rect.top;
-      prevMoveX = clientX;
-      prevMoveY = clientY;
-      waveSurge = 1.8;
-      apply3DTransform(1.025);
+      dragging = true;
+      startX = clientX;
+      startY = clientY;
+      origLeft = rect.left;
+      origTop = rect.top;
     }
 
-    function stepDrag(clientX, clientY) {
-      if (!isDragging) return;
-      const deltaFromStartX = clientX - dragStartX;
-      const deltaFromStartY = clientY - dragStartY;
-
-      const stepDx = clientX - prevMoveX;
-      const stepDy = clientY - prevMoveY;
-      prevMoveX = clientX;
-      prevMoveY = clientY;
-
+    function onDragMove(clientX, clientY) {
+      if (!dragging) return;
+      const dx = clientX - startX;
+      const dy = clientY - startY;
       const maxX = window.innerWidth - stage.offsetWidth - 6;
       const maxY = window.innerHeight - stage.offsetHeight - 6;
-      const nextX = Math.max(6, Math.min(maxX, stageStartLeft + deltaFromStartX));
-      const nextY = Math.max(6, Math.min(maxY, stageStartTop + deltaFromStartY));
-
-      stage.style.left = nextX + "px";
-      stage.style.top = nextY + "px";
-
-      tiltY = Math.max(-14, Math.min(14, stepDx * 2.0));
-      tiltX = Math.max(-14, Math.min(14, -stepDy * 2.0));
-      waveSurge = Math.min(2.5, waveSurge + (Math.abs(stepDx) + Math.abs(stepDy)) * 0.025);
-      apply3DTransform(1.025);
+      stage.style.left = Math.max(6, Math.min(maxX, origLeft + dx)) + "px";
+      stage.style.top = Math.max(6, Math.min(maxY, origTop + dy)) + "px";
     }
 
-    function finishDrag() {
-      if (!isDragging) return;
-      isDragging = false;
-      resetTilt();
+    function onDragEnd() {
+      dragging = false;
     }
 
     dragHandle.addEventListener("mousedown", (e) => {
       if (e.target.closest("button")) return;
       e.preventDefault();
-      beginDrag(e.clientX, e.clientY);
+      onDragStart(e.clientX, e.clientY);
     });
-    window.addEventListener("mousemove", (e) => stepDrag(e.clientX, e.clientY));
-    window.addEventListener("mouseup", finishDrag);
+    window.addEventListener("mousemove", (e) => onDragMove(e.clientX, e.clientY));
+    window.addEventListener("mouseup", onDragEnd);
 
     dragHandle.addEventListener("touchstart", (e) => {
       if (e.target.closest("button")) return;
       const t = e.touches[0];
-      beginDrag(t.clientX, t.clientY);
+      onDragStart(t.clientX, t.clientY);
     }, { passive: true });
-
     window.addEventListener("touchmove", (e) => {
-      if (!isDragging) return;
+      if (!dragging) return;
       const t = e.touches[0];
-      stepDrag(t.clientX, t.clientY);
+      onDragMove(t.clientX, t.clientY);
     }, { passive: true });
-
-    window.addEventListener("touchend", finishDrag);
-    window.addEventListener("touchcancel", finishDrag);
+    window.addEventListener("touchend", onDragEnd);
+    window.addEventListener("touchcancel", onDragEnd);
   </script>
 </body>
 </html>
