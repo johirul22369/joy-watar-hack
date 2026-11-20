@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>JOY VAI — 3D Live Water Panel</title>
+  <title>JOY VAI — HGNICE 3D Live Water Panel</title>
   <style>
     * {
       box-sizing: border-box;
@@ -20,7 +20,7 @@
       background: #0f172a;
     }
 
-    /* Fullscreen Target Page Frame */
+    /* Direct Fullscreen Target Site Layer */
     .site-layer {
       position: fixed;
       inset: 0;
@@ -37,61 +37,7 @@
       display: block;
     }
 
-    /* Direct Redirect / Fallback Overlay */
-    .redirect-overlay {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      z-index: 2;
-      color: #ffffff;
-    }
-
-    .redirect-overlay.show {
-      display: flex;
-    }
-
-    .redirect-box {
-      width: 100%;
-      max-width: 360px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 18px;
-      padding: 20px 16px;
-      backdrop-filter: blur(12px);
-    }
-
-    .redirect-box h2 {
-      font-size: 18px;
-      font-weight: 900;
-      margin-bottom: 6px;
-    }
-
-    .redirect-box p {
-      font-size: 12px;
-      color: #cbd5e1;
-      margin-bottom: 14px;
-      line-height: 1.45;
-    }
-
-    .go-reg-btn {
-      width: 100%;
-      padding: 12px 14px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #06b6d4, #0284c7);
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    /* Bottom Floating Quick Chips */
+    /* Bottom Quick Direct Chips */
     .floating-chips {
       position: fixed;
       bottom: 16px;
@@ -103,7 +49,7 @@
     }
 
     .chip-btn {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.96);
       color: #0f172a;
       border: 1px solid #bae6fd;
       border-radius: 10px;
@@ -113,7 +59,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.22);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
       cursor: pointer;
       text-decoration: none;
     }
@@ -145,11 +91,12 @@
       backdrop-filter: blur(14px);
       border: 1.5px solid rgba(255, 255, 255, 0.92);
       box-shadow:
-        0 24px 48px rgba(2, 132, 199, 0.28),
+        0 24px 48px rgba(2, 132, 199, 0.3),
         inset 0 1px 2px rgba(255, 255, 255, 0.95);
       transition: transform 0.12s ease-out;
     }
 
+    /* Animated Water Waves Inside Popup */
     .panel-water-bg {
       position: absolute;
       inset: 0;
@@ -164,6 +111,7 @@
       display: block;
     }
 
+    /* Specular 3D Highlight */
     .water-panel::before {
       content: "";
       position: absolute;
@@ -238,12 +186,13 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     }
 
+    /* Lock View */
     .lock-card {
-      background: rgba(255, 255, 255, 0.84);
+      background: rgba(255, 255, 255, 0.85);
       border-radius: 16px;
       padding: 16px 12px;
       text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.95);
       transform: translateZ(8px);
     }
 
@@ -319,6 +268,7 @@
       min-height: 14px;
     }
 
+    /* Unlocked View */
     .unlocked-view {
       display: none;
       transform: translateZ(10px);
@@ -487,7 +437,7 @@
 </head>
 <body>
 
-  <!-- Target HGNICE Register Page Frame -->
+  <!-- Direct Target Page Frame (No Middle Blocking Screen) -->
   <div class="site-layer">
     <iframe
       id="targetFrame"
@@ -498,22 +448,13 @@
     ></iframe>
   </div>
 
-  <!-- Shown Only if Target Site Blocks Embedding -->
-  <div class="redirect-overlay" id="redirectOverlay">
-    <div class="redirect-box">
-      <h2>JOY VAI • @BDT588</h2>
-      <p>Continue to the official HGNICE registration page to register and trade.</p>
-      <button class="go-reg-btn" onclick="goRegisterPage()">Go to Register Page</button>
-    </div>
-  </div>
-
-  <!-- Direct Link Chips -->
+  <!-- Quick Direct Chips -->
   <div class="floating-chips">
-    <a class="chip-btn primary-chip" href="https://hgnice.bet/#/register?invitationCode=376851951983">
+    <a class="chip-btn primary-chip" href="https://hgnice.bet/#/register?invitationCode=376851951983" target="_top">
       <span>💧</span>
       <span>JOY VAI</span>
     </a>
-    <a class="chip-btn" href="https://hgnice.bet/#/register?invitationCode=376851951983">
+    <a class="chip-btn" href="https://hgnice.bet/#/register?invitationCode=376851951983" target="_top">
       <span>↗</span>
       <span>Register</span>
     </a>
@@ -522,6 +463,7 @@
   <!-- 3D Floating Water-Glass Panel -->
   <div class="water-stage" id="waterStage">
     <aside class="water-panel" id="waterPanel">
+      <!-- Live Water Waves Inside Popup -->
       <div class="panel-water-bg">
         <svg viewBox="0 0 300 420" preserveAspectRatio="none">
           <defs>
@@ -554,6 +496,7 @@
       </div>
 
       <div class="panel-body">
+        <!-- Lock View -->
         <div class="lock-card" id="lockCard">
           <div class="lock-icon-ring">🔒</div>
           <div class="lock-title">WATERFALL LOCK</div>
@@ -578,6 +521,7 @@
           <div class="error-msg" id="errorMsg"></div>
         </div>
 
+        <!-- Unlocked Signal View -->
         <div class="unlocked-view" id="unlockedView">
           <div class="meta-strip">
             <div class="period-box">
@@ -600,6 +544,7 @@
             <div class="prob-pct" id="probText">78%</div>
           </div>
 
+          <!-- Probable 2 Numbers with Half-Filled Moving Water Inside Digits -->
           <div class="numbers-grid">
             <div class="num-head">
               <span>PROBABLE 2 NUMBERS</span>
@@ -680,28 +625,6 @@
     const REGISTER_URL = "https://hgnice.bet/#/register?invitationCode=376851951983";
     const VALID_KEYS = ["ZAHIRUL22369", "JOY-WATER", "KAMRUL-WATER", "JOYVAI", "BDT588"];
     const MARKET_MODES = ["WAVE ZIGZAG", "DRAGON STREAK", "DOUBLE WAVE", "ALT 1-1", "CHOPPY FLOW"];
-
-    function goRegisterPage() {
-      window.location.href = REGISTER_URL;
-    }
-
-    const redirectOverlay = document.getElementById("redirectOverlay");
-    const targetFrame = document.getElementById("targetFrame");
-
-    setTimeout(() => {
-      try {
-        const doc = targetFrame.contentDocument;
-        if (!doc || doc.body.innerHTML.trim() === "") {
-          redirectOverlay.classList.add("show");
-        }
-      } catch {
-        // Cross-origin frame
-      }
-    }, 2800);
-
-    targetFrame.addEventListener("error", () => {
-      redirectOverlay.classList.add("show");
-    });
 
     const stage = document.getElementById("waterStage");
     const panel = document.getElementById("waterPanel");
