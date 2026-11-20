@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>JOY VAI — HGNICE Register & 3D Water Panel</title>
+  <title>JOY VAI — 3D Live Water Panel</title>
   <style>
     * {
       box-sizing: border-box;
@@ -15,184 +15,117 @@
 
     html, body {
       width: 100%;
-      min-height: 100%;
-      background: #f5f6fa;
-      overflow-x: hidden;
+      height: 100%;
+      overflow: hidden;
+      background: #0f172a;
     }
 
-    /* HGNICE Register Page Layer */
-    .reg-page {
-      max-width: 480px;
-      margin: 0 auto;
-      min-height: 100vh;
-      background: #f6f7fb;
-      padding-bottom: 32px;
-      position: relative;
+    /* Fullscreen Target Page Frame */
+    .site-layer {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       z-index: 1;
+      background: #0f172a;
     }
 
-    .reg-header {
-      background: linear-gradient(90deg, #ff7b6b 0%, #ff585d 100%);
-      color: #ffffff;
-      padding: 14px 16px 22px;
+    .site-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
     }
 
-    .reg-top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-
-    .back-arrow {
-      font-size: 20px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .hgnice-logo {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -0.6px;
-      font-style: italic;
-    }
-
-    .lang-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .reg-header h1 {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .reg-header p {
-      font-size: 12px;
-      opacity: 0.92;
-    }
-
-    .reg-tab-box {
-      background: #ffffff;
-      padding: 14px 16px 0;
-      border-bottom: 1px solid #eceef4;
-    }
-
-    .reg-tab-active {
-      display: inline-flex;
+    /* Direct Redirect / Fallback Overlay */
+    .redirect-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+      display: none;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      color: #ff5b5e;
-      font-size: 14px;
-      font-weight: 800;
-      padding-bottom: 10px;
-      border-bottom: 3px solid #ff5b5e;
-    }
-
-    .reg-form {
-      padding: 16px;
-    }
-
-    .field-group {
-      margin-bottom: 16px;
-    }
-
-    .field-label {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #1f2937;
-      margin-bottom: 8px;
-    }
-
-    .field-label .ico {
-      color: #ff5b5e;
-      font-size: 15px;
-    }
-
-    .phone-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .code-box {
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #374151;
-      white-space: nowrap;
-    }
-
-    .input-box {
-      flex: 1;
-      width: 100%;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 14px;
-      color: #111827;
-      outline: none;
-    }
-
-    .input-box::placeholder {
-      color: #9ca3af;
-    }
-
-    .agree-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: #4b5563;
-      margin: 14px 0 20px;
-    }
-
-    .agree-row span.pink {
-      color: #ff5b5e;
-      font-weight: 700;
-    }
-
-    .reg-submit-btn {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #ff8577 0%, #ff6368 100%);
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 8px 18px rgba(255, 99, 104, 0.28);
-    }
-
-    .direct-site-link {
-      display: block;
+      justify-content: center;
+      padding: 20px;
       text-align: center;
-      margin-top: 12px;
+      z-index: 2;
+      color: #ffffff;
+    }
+
+    .redirect-overlay.show {
+      display: flex;
+    }
+
+    .redirect-box {
+      width: 100%;
+      max-width: 360px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+      padding: 20px 16px;
+      backdrop-filter: blur(12px);
+    }
+
+    .redirect-box h2 {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .redirect-box p {
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+      line-height: 1.45;
+    }
+
+    .go-reg-btn {
+      width: 100%;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #06b6d4, #0284c7);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* Bottom Floating Quick Chips */
+    .floating-chips {
+      position: fixed;
+      bottom: 16px;
+      left: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 45;
+    }
+
+    .chip-btn {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      padding: 7px 12px;
       font-size: 12px;
       font-weight: 800;
-      color: #0284c7;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.22);
+      cursor: pointer;
       text-decoration: none;
+    }
+
+    .chip-btn.primary-chip {
+      color: #0369a1;
     }
 
     /* 3D Perspective Stage for Floating Water Panel */
     .water-stage {
       position: fixed;
-      top: 84px;
+      top: 76px;
       right: 12px;
       width: 266px;
       perspective: 950px;
@@ -554,60 +487,36 @@
 </head>
 <body>
 
-  <!-- HGNICE Register Page -->
-  <div class="reg-page">
-    <div class="reg-header">
-      <div class="reg-top-bar">
-        <span class="back-arrow" onclick="goOfficial()">‹</span>
-        <span class="hgnice-logo">HGNICE</span>
-        <span class="lang-badge">🇺🇸 EN</span>
-      </div>
-      <h1>Register</h1>
-      <p>Please register by phone number or email</p>
+  <!-- Target HGNICE Register Page Frame -->
+  <div class="site-layer">
+    <iframe
+      id="targetFrame"
+      class="site-iframe"
+      src="https://hgnice.bet/#/register?invitationCode=376851951983"
+      allow="clipboard-write; fullscreen"
+      referrerpolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+
+  <!-- Shown Only if Target Site Blocks Embedding -->
+  <div class="redirect-overlay" id="redirectOverlay">
+    <div class="redirect-box">
+      <h2>JOY VAI • @BDT588</h2>
+      <p>Continue to the official HGNICE registration page to register and trade.</p>
+      <button class="go-reg-btn" onclick="goRegisterPage()">Go to Register Page</button>
     </div>
+  </div>
 
-    <div class="reg-tab-box">
-      <div class="reg-tab-active">
-        <span>📱</span>
-        <span>Register your phone</span>
-      </div>
-    </div>
-
-    <form class="reg-form" onsubmit="event.preventDefault(); goOfficial();">
-      <div class="field-group">
-        <div class="field-label"><span class="ico">📱</span><span>Phone number</span></div>
-        <div class="phone-row">
-          <div class="code-box">+880 ⌄</div>
-          <input type="tel" class="input-box" placeholder="Please enter the phone number" />
-        </div>
-      </div>
-
-      <div class="field-group">
-        <div class="field-label"><span class="ico">🔒</span><span>Set password</span></div>
-        <input type="password" class="input-box" placeholder="Set password" />
-      </div>
-
-      <div class="field-group">
-        <div class="field-label"><span class="ico">🔒</span><span>Confirm password</span></div>
-        <input type="password" class="input-box" placeholder="Confirm password" />
-      </div>
-
-      <div class="field-group">
-        <div class="field-label"><span class="ico">📩</span><span>Invite code</span></div>
-        <input type="text" class="input-box" value="376851951983" readonly />
-      </div>
-
-      <div class="agree-row">
-        <input type="checkbox" checked />
-        <span>I have read and agree <span class="pink">【Privacy Agreement】</span></span>
-      </div>
-
-      <button type="submit" class="reg-submit-btn">Register</button>
-
-      <a class="direct-site-link" href="https://hgnice.bet/#/register?invitationCode=376851951983">
-        Open Official HGNICE Link • JOY VAI (@BDT588)
-      </a>
-    </form>
+  <!-- Direct Link Chips -->
+  <div class="floating-chips">
+    <a class="chip-btn primary-chip" href="https://hgnice.bet/#/register?invitationCode=376851951983">
+      <span>💧</span>
+      <span>JOY VAI</span>
+    </a>
+    <a class="chip-btn" href="https://hgnice.bet/#/register?invitationCode=376851951983">
+      <span>↗</span>
+      <span>Register</span>
+    </a>
   </div>
 
   <!-- 3D Floating Water-Glass Panel -->
@@ -768,13 +677,31 @@
   </div>
 
   <script>
-    const REFERRAL_URL = "https://hgnice.bet/#/register?invitationCode=376851951983";
+    const REGISTER_URL = "https://hgnice.bet/#/register?invitationCode=376851951983";
     const VALID_KEYS = ["ZAHIRUL22369", "JOY-WATER", "KAMRUL-WATER", "JOYVAI", "BDT588"];
     const MARKET_MODES = ["WAVE ZIGZAG", "DRAGON STREAK", "DOUBLE WAVE", "ALT 1-1", "CHOPPY FLOW"];
 
-    function goOfficial() {
-      window.location.href = REFERRAL_URL;
+    function goRegisterPage() {
+      window.location.href = REGISTER_URL;
     }
+
+    const redirectOverlay = document.getElementById("redirectOverlay");
+    const targetFrame = document.getElementById("targetFrame");
+
+    setTimeout(() => {
+      try {
+        const doc = targetFrame.contentDocument;
+        if (!doc || doc.body.innerHTML.trim() === "") {
+          redirectOverlay.classList.add("show");
+        }
+      } catch {
+        // Cross-origin frame
+      }
+    }, 2800);
+
+    targetFrame.addEventListener("error", () => {
+      redirectOverlay.classList.add("show");
+    });
 
     const stage = document.getElementById("waterStage");
     const panel = document.getElementById("waterPanel");
